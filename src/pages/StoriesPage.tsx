@@ -15,7 +15,7 @@ export default function StoriesPage({ book }: Props) {
   return (
     <div className="stories">
       <header className="page-head">
-        <p className="eyebrow">{current ? `${current.he} · ${current.en}` : `${STORIES.length} סיפורים`}</p>
+        <p className="eyebrow">{current ? `${current.he}` : `${STORIES.length} סיפורים`}</p>
         <h1>{current ? `סיפורי ${current.he}` : 'הסיפור נשאר. הקריאה משתנה.'}</h1>
         <p className="lead">
           <Rich text="כל סיפור מופיע בשורה: **מיקומו בספר**, **תקופה**, ו**מושגי הפרשנות**. לחצו על שורה לקריאה." />
@@ -30,7 +30,7 @@ export default function StoriesPage({ book }: Props) {
                 <span className="row-era">{s.era}</span>
                 <span className="row-ref">{STORY_CHAPTERS[s.id] ? `פרק ${STORY_CHAPTERS[s.id].from}${STORY_CHAPTERS[s.id].to !== STORY_CHAPTERS[s.id].from ? `–${STORY_CHAPTERS[s.id].to}` : ''}` : s.ref}</span>
                 <span className="row-title">{s.title}</span>
-                <span className="row-insight">{s.insight}</span>
+                <span className="row-insight"><Rich text={`==${s.insight}==`} /></span>
               </a>
             </li>
           ))}

@@ -27,7 +27,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'avram-yetzia',
     year: -1900,
-    when: 'כ-1900 לפנה"ס (הערכה מקובלת; התארוך נדון)',
+    when: 'כ-−1900 (הערכה מקובלת; התארוך נדון)',
     era: 'אבות',
     title: 'אברם יוצא מחרן',
     ref: 'בראשית יב, א-ד',
@@ -37,7 +37,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'yosef-mitzraymah',
     year: -1700,
-    when: 'כ-1700 לפנה"ס (הערכה מקובלת)',
+    when: 'כ-−1700 (הערכה מקובלת)',
     era: 'אבות',
     title: 'יוסף נמכר ומגיע למצרים',
     ref: 'בראשית לז, כח; לט, א',
@@ -47,7 +47,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'yetziat',
     year: -1250,
-    when: 'כ-1250 לפנה"ס (הערכה; הזמן נדון בחקר)',
+    when: 'כ-−1250 (הערכה; הזמן נדון בחקר)',
     era: 'יציאה',
     title: 'יציאת מצרים',
     ref: 'שמות יב, לז-מא; יד, כא',
@@ -57,7 +57,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'matan-torah',
     year: -1250,
-    when: 'כ-1250 לפנה"ס (הערכה; הזמן נדון בחקר)',
+    when: 'כ-−1250 (הערכה; הזמן נדון בחקר)',
     era: 'יציאה',
     title: 'מעמד הר סיני',
     ref: 'שמות יט-כ',
@@ -67,7 +67,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'yehoshua',
     year: -1200,
-    when: 'כ-1200 לפנה"ס (הערכה; הזמן נדון בחקר)',
+    when: 'כ-−1200 (הערכה; הזמן נדון בחקר)',
     era: 'מלוכה',
     title: 'יהושע מוביל את העם מעבר לירדן',
     ref: 'יהושע א, א-ב',
@@ -76,7 +76,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'david',
     year: -1000,
-    when: 'כ-1000 לפנה"ס (הערכה מקובלת)',
+    when: 'כ-−1000 (הערכה מקובלת)',
     era: 'מלוכה',
     title: 'דוד מלך על ישראל',
     ref: 'שמואל ב ה, ד-ה',
@@ -85,7 +85,7 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'mikdash',
     year: -960,
-    when: 'כ-960 לפנה"ס (הערכה מקובלת)',
+    when: 'כ-−960 (הערכה מקובלת)',
     era: 'מלוכה',
     title: 'שלמה בונה את בית המקדש',
     ref: 'מלכים א ו, א',
@@ -94,22 +94,22 @@ export const TIMELINE: TimelineEvent[] = [
   {
     id: 'churban-1',
     year: -586,
-    when: '586 לפנה"ס (מוסכם בחקר)',
+    when: '−586 (מוסכם בחקר)',
     era: 'חורבן',
     title: 'חורבן הבית הראשון',
     ref: 'מלכים ב כה, ח-ט',
     note: 'ירושלים נחרבת, והעם יוצא לגלות.',
-    date: '586 לפנה"ס (תאריך מוסכם בחקר)',
+    date: '−586 (תאריך מוסכם בחקר)',
   },
   {
     id: 'shivat-tzion',
     year: -538,
-    when: '538 לפנה"ס (מוסכם בחקר)',
+    when: '−538 (מוסכם בחקר)',
     era: 'שיבה',
     title: 'שיבת ציון וצו כורש',
     ref: 'עזרא א, א-ד',
     note: 'הצו מאפשר שיבה לירושלים ובנייה מחדש.',
-    date: '538 לפנה"ס (תאריך מוסכם בחקר)',
+    date: '−538 (תאריך מוסכם בחקר)',
   },
   {
     id: 'churban-2',

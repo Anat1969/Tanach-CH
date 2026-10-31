@@ -10,6 +10,7 @@ import { ART } from '../content/art';
 import type { Story } from '../types';
 import { orderStories } from '../content/order';
 import { PLOTS } from '../content/plots';
+import Rich from './Rich';
 
 // The same stage on every topic page, in the same place:
 // 1. the year scale (top band), 2. the map (left) and the family tree (right), 3. the numbered story rows.
@@ -84,7 +85,7 @@ export default function Stage({
                 <span className="row-era">{s.era}</span>
                 <span className="row-ref">{s.ref}</span>
                 <span className="row-title">{s.title}</span>
-                <span className="row-insight">{s.insight}</span>
+                <span className="row-insight"><Rich text={`==${s.insight}==`} /></span>
               </button>
               {s.id === focus?.id && (
                 <div className="row-detail">

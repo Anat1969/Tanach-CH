@@ -21,7 +21,7 @@ export function BookRail({ bookId, from, to }: { bookId: string; from?: number; 
   return (
     <figure className="book-rail">
       <figcaption className="eyebrow">
-        {book.he} <span dir="ltr">({book.en})</span>, {n} פרקים
+        {book.he}, {n} פרקים
         {mark && from !== undefined && to !== undefined && (
           <>
             {' · '}הסיפור: פרק{from === to ? ` ${from}` : `ים ${from}–${to}`}
@@ -52,31 +52,34 @@ export function BookRail({ bookId, from, to }: { bookId: string; from?: number; 
 }
 
 // All 24 books in the traditional order, widths by chapter count. Built books are solid, others outlined.
-export function BookSequence() {
+export function BookSequence({ current, compact = false }: { current?: string; compact?: boolean }) {
   const total = BOOKS.reduce((sum, b) => sum + (CHAPTER_COUNT[b.id] ?? 0), 0);
   const W = 1000;
+  const H = compact ? 60 : 150;
   let acc = 0;
   return (
-    <figure className="book-seq">
-      <figcaption className="eyebrow">כל ספרי התנ"ך לפי הסדר המסורתי, ברוחב לפי מספר הפרקים</figcaption>
-      <svg viewBox={`0 0 ${W} 150`} className="seq-svg" role="img" aria-label="סדר ספרי התנ&quot;ך">
+    <figure className={`book-seq${compact ? ' is-compact' : ''}`}>
+      {!compact && <figcaption className="eyebrow">כל ספרי התנ"ך לפי הסדר המסורתי, ברוחב לפי מספר הפרקים</figcaption>}
+      <svg viewBox={`0 0 ${W} ${H}`} className="seq-svg" role="img" aria-label="סדר ספרי התנ&quot;ך">
         {BOOKS.map((b) => {
           const w = ((CHAPTER_COUNT[b.id] ?? 0) / total) * W;
           const x = acc;
           acc += w;
           const built = STORIES.some((s) => s.book === b.id);
+          const here = current === b.id;
           return (
             <g key={b.id}>
               <rect
                 x={x}
-                y={20}
+                y={compact ? 8 : 20}
                 width={Math.max(w - 2, 1)}
-                height={60}
+                height={compact ? 44 : 60}
+                opacity={current && !here ? 0.45 : 1}
                 fill={built ? SECTION_COLOR[b.section] : 'none'}
                 stroke={SECTION_COLOR[b.section]}
                 strokeWidth={built ? 0 : 1.5}
               >
-                <title>{`${b.he} (${b.en}): ${CHAPTER_COUNT[b.id] ?? 0} פרקים`}</title>
+                <title>{`${b.he}: ${CHAPTER_COUNT[b.id] ?? 0} פרקים`}</title>
               </rect>
               {w > 45 && (
                 <text x={x + w / 2} y={60} textAnchor="middle" className={`seq-label${built ? ' is-built' : ''}`} style={{ direction: 'rtl' }}>

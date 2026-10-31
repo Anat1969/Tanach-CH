@@ -6,6 +6,8 @@ import Correlation from '../components/Correlation';
 import { ART } from '../content/art';
 import { QUOTE_VOCAL } from '../content/quotes';
 import { PLOTS } from '../content/plots';
+import QuestionAnswers from '../components/QuestionAnswers';
+import Typed from '../components/Typed';
 import { STORY_CHAPTERS } from '../content/chapters';
 import { BookRail } from '../components/BookRail';
 import Rich from '../components/Rich';
@@ -61,7 +63,7 @@ export default function StoryPage({ id, level }: Props) {
         <p className="eyebrow">{story.ref}</p>
         <h1>{story.title}</h1>
         <p className="insight-line">
-          <Rich text={story.insight} />
+          <Rich text={`==${story.insight}==`} />
         </p>
         <div className="story-motif">
           <Motif size={120} />
@@ -113,26 +115,13 @@ export default function StoryPage({ id, level }: Props) {
 
       <div className="grid two">
         <section className="card">
-          <p className="eyebrow">שאלות לקורא</p>
-          <ul className="plain-list">
-            {story.questions.map((q) => (
-              <li key={q}>{q}</li>
-            ))}
-          </ul>
-          <a className="chip press" href={`#/journal`}>
-            לכתוב ביומן
-          </a>
+          <p className="eyebrow">שאלות לקורא · לחצו לכתיבת תשובה</p>
+          <QuestionAnswers storyId={story.id} questions={story.questions} />
         </section>
 
         <section className="card tone-insight">
           <p className="eyebrow">שלוש שורות</p>
-          <p className="haiku">
-            {story.haiku.map((line) => (
-              <span key={line} className="haiku-line">
-                {line}
-              </span>
-            ))}
-          </p>
+          <Typed lines={story.haiku} />
           <p className="haiku-note">{story.haikuNote}</p>
         </section>
       </div>
@@ -144,7 +133,7 @@ export default function StoryPage({ id, level }: Props) {
             {stops.map(({ r, s }) => (
               <a key={`${r.id}-${s.id}`} className="card link-card press" href={`#/map?route=${r.id}`}>
                 <h3>
-                  {s.he} <span className="en">({s.en})</span>
+                  {s.he}
                 </h3>
                 <p className="eyebrow">{s.ref}</p>
                 <p>{r.he}</p>

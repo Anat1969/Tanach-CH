@@ -87,7 +87,7 @@ export default function Correlation({ stories, title, initial = 'stories', eras 
                 {stops.map(({ route: r, stop }) => (
                   <li key={`${r.id}-${stop.id}`}>
                     <a href={`#/map?route=${r.id}`} className="link-btn">
-                      {stop.he} ({stop.en})
+                      {stop.he}
                     </a>{' '}
                     <span className="source">{stop.ref}</span>
                   </li>
@@ -110,7 +110,7 @@ export default function Correlation({ stories, title, initial = 'stories', eras 
               <ul className="plain-list">
                 {ERA_CONTEXT[era].facts.map((f) => (
                   <li key={f.text}>
-                    {f.text} <span className="source">מקור: {f.source}</span>
+                    <strong>{f.text}</strong> <span className="source">מקור: {f.source}</span>
                   </li>
                 ))}
               </ul>

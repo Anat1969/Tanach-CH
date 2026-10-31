@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { usePanZoom } from '../lib/panzoom';
 import { TIMELINE, ERA_COLOR, ERA_SPAN, type Era } from '../content/timeline';
 
 // A true year scale: 2000 לפנה"ס to 100 לספירה. Position is the year, not the order.
@@ -20,8 +21,16 @@ const SEGMENTS: { era: Era; from: number; to: number; key: string }[] = [
   { era: 'חורבן', from: -300, to: 100, key: 'חורבן-2' },
 ];
 
+// Dark text on light bands, light text on dark ones (relative luminance).
+const textOn = (hex: string): string => {
+  const n = parseInt(hex.slice(1), 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.6 ? '#1c1a17' : '#fdfdfc';
+};
+
 const TICKS = [-2000, -1750, -1500, -1250, -1000, -750, -500, -250, 0, 100];
-const tickLabel = (y: number) => (y < 0 ? `${Math.abs(y)}` : y === 0 ? '0' : `${y}`);
+const tickLabel = (y: number) => (y < 0 ? `−${Math.abs(y)}` : y === 0 ? '0' : `${y}`);
 
 interface Props {
   highlightEras?: Era[];
@@ -32,11 +41,24 @@ export default function TimeTrack({ highlightEras, highlightIds }: Props) {
   const focusEras = highlightEras ?? [];
   const focusIds = highlightIds ?? [];
   const idle = focusEras.length === 0 && focusIds.length === 0;
+  const pz = usePanZoom(`0 0 ${W} 230`);
   const dimmed = (on: boolean) => (on || idle ? 1 : 0.28);
 
   return (
     <div className="time-track">
-      <svg viewBox={`0 0 ${W} 230`} className="time-svg" role="group" aria-label="ציר זמן מקראי לפי שנים">
+      <svg
+        ref={pz.ref}
+        viewBox={pz.viewBox}
+        className="time-svg"
+        role="group"
+        aria-label="ציר זמן מקראי לפי שנים"
+        style={{ touchAction: 'none', cursor: 'grab' }}
+        onPointerDown={pz.onPointerDown}
+        onPointerMove={pz.onPointerMove}
+        onPointerUp={pz.onPointerUp}
+        onPointerCancel={pz.onPointerUp}
+        onDoubleClick={pz.reset}
+      >
         {SEGMENTS.map((seg) => {
           const x0 = xOf(seg.from);
           const x1 = xOf(seg.to);
@@ -44,7 +66,7 @@ export default function TimeTrack({ highlightEras, highlightIds }: Props) {
             <g key={seg.key}>
               <rect x={x0} y={0} width={x1 - x0} height={46} fill={ERA_COLOR[seg.era]} opacity={dimmed(focusEras.includes(seg.era))} />
               {x1 - x0 > 60 && (
-                <text x={(x0 + x1) / 2} y={28} textAnchor="middle" className="band-label" style={{ direction: 'rtl' }}>
+                <text x={(x0 + x1) / 2} y={28} textAnchor="middle" className="band-label" style={{ direction: 'rtl', fill: textOn(ERA_COLOR[seg.era]) }}>
                   {seg.era}
                 </text>
               )}
