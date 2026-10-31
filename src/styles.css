@@ -1447,3 +1447,50 @@ h3 {
   font-size: 12px;
   color: var(--problem);
 }
+
+/* ===== Story cards: image, caption and title align across the row ===== */
+.corr-stories .story-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.story-card-frame {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ece6da;
+  border: 1px solid var(--line);
+  margin-bottom: var(--s2);
+}
+.story-card-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+.story-card-empty {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  padding: var(--s3);
+  margin: 0;
+}
+.story-card-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  height: 3.2em;
+  overflow: hidden;
+  margin: 0 0 var(--s3);
+}
+.story-card-text {
+  margin-top: auto;
+}
+.story-card-text h3 {
+  font-size: 20px;
+}
