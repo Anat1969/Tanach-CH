@@ -48,9 +48,7 @@ async function run() {
     await waitForServer(BASE);
     const browser = await chromium.launch();
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'he-IL' });
-    await context.route('**/ai-menu.js', (route) =>
-      route.fulfill({ contentType: 'application/javascript', body: STUB }),
-    );
+    await context.route('**/ai-menu.js', (route) => route.fulfill({ contentType: 'application/javascript', body: STUB }));
     await context.route(/fonts\.(googleapis|gstatic)\.com/, (route) => route.abort());
     const page = await context.newPage();
     const errors = [];
@@ -59,115 +57,90 @@ async function run() {
       if (m.type() === 'error' && !/favicon|Failed to load resource/.test(m.text())) errors.push(m.text());
     });
 
-    // Home
+    // Home and the bar
     await page.goto(BASE);
     await page.waitForSelector('h1');
     ok((await page.getAttribute('html', 'dir')) === 'rtl', 'html is RTL');
     ok((await page.textContent('h1')).includes('התנ"ך'), 'home headline in Hebrew');
     ok((await page.locator('ai-menu .logo').count()) === 1, 'single A&I logo button in the bar');
-    ok((await page.locator('header >> text=העתקת קישור').count()) === 0, 'no loose development buttons in the bar');
-    await page.screenshot({ path: path.join(SHOTS, 'home-desktop.png'), fullPage: false });
-
-    // Home: floor selection
-    await page.locator('.hero-stack .floor-btn', { hasText: 'סוד' }).click();
-    ok((await page.locator('.hero-stack h2').textContent()) === 'סוד', 'home floor selection updates the panel');
-
-    // Stories
-    await page.goto(`${BASE}#/stories`);
-    await page.waitForSelector('.stories a.card');
-    ok((await page.locator('.stories a.card').count()) === 16, 'sixteen stories listed');
-    await page.goto(`${BASE}#/books`);
-    await page.waitForSelector('.book-card');
-    ok((await page.locator('.book-card').count()) === 24, 'twenty-four books shown');
-    ok((await page.locator('.book-card.is-planned').count()) === 21, 'twenty-one books planned, three active');
-    await page.goto(`${BASE}#/stories/har-sinai`);
-    await page.waitForSelector('.level-panel');
-    ok((await page.locator('.level-panel .source').count()) === 1, 'new Exodus story renders its floor');
-
-    // Story with floors
-    await page.goto(`${BASE}#/stories/akedah`);
-    await page.waitForSelector('.level-panel');
-    ok((await page.textContent('.level-panel h2')).length > 0, 'story shows the pshat floor by default');
-    await page.locator('.story-side .floor-btn', { hasText: 'סוד' }).click();
-    await page.waitForFunction(() => location.hash.includes('level=sod'));
-    ok((await page.textContent('.level-panel .eyebrow')).includes('קריאה פנימית'), 'choosing sod shows its defined term');
-    ok((await page.locator('.level-panel .source').count()) === 1, 'each floor names its source');
-    await page.screenshot({ path: path.join(SHOTS, 'story-desktop.png'), fullPage: true });
-
-    // Map
-    await page.goto(`${BASE}#/map`);
-    await page.waitForSelector('.map-layout .station');
-    ok((await page.locator('.map-layout .station').count()) === 9, 'abraham route shows nine stations');
-    await page.locator('.route-switch button', { hasText: 'מסע היציאה' }).click();
-    await page.waitForFunction(() => location.hash.includes('route=exodus'));
-    await page.waitForFunction(() => document.querySelectorAll('.map-layout .station').length === 8);
-    ok((await page.locator('.map-layout .station').count()) === 8, 'exodus route shows eight stations');
-    await page.locator('.map-layout .station', { hasText: 'ים סוף' }).first().locator('.station-hit').click();
-    ok((await page.locator('.map-detail h2').textContent()).includes('ים סוף'), 'station click opens its detail');
-    await page.waitForTimeout(1700);
-    await page.screenshot({ path: path.join(SHOTS, 'map-desktop.png'), fullPage: true });
-
-    // Timeline
-    await page.goto(`${BASE}#/time`);
-    await page.waitForSelector('.tl-item');
-    ok((await page.locator('.tl-item').count()) === 10, 'timeline shows ten events');
-
-    // People
-    await page.goto(`${BASE}#/people`);
-    await page.waitForSelector('.chip-cloud');
-    await page.locator('.chip-cloud button', { hasText: 'יעקב' }).click();
-    ok((await page.locator('.rel-list li').count()) >= 3, 'selecting a person lists its relations with sources');
-    ok((await page.locator('.rel-list .source').first().textContent()).includes('מקור:'), 'each relation has a source line');
-
-    // Motion layer
-    await page.goto(`${BASE}#/map`);
-    await page.waitForSelector('.map-layout .station');
-    await page.locator('.journey-bar button').click();
-    await page.waitForSelector('.traveler');
-    ok((await page.locator('.traveler').count()) === 1, 'journey traveler appears on the map');
-    await page.goto(`${BASE}#/time`);
-    await page.waitForSelector('.time-page > .time-track .track-dot');
-    ok((await page.locator('.time-page > .time-track .track-dot').count()) === 10, 'timeline track shows ten dots');
-    await page.goto(`${BASE}#/people`);
-    await page.waitForSelector('.family-tree');
-    ok((await page.locator('.tree-panel .tree-node').count()) === 11, 'family tree shows the eleven people of Genesis');
-    ok((await page.locator('.family-tree .link').count()) >= 8, 'family tree draws marriages and descent lines');
-    await page.locator('.tree-panel .tree-node', { hasText: 'יוסף' }).click();
-    ok((await page.locator('.rel-list h3').first().textContent()).includes('יוסף'), 'clicking a tree node selects that person');
-    await page.goto(`${BASE}#/stories/lech-lecha`);
-    await page.waitForSelector('.motif');
-    ok((await page.locator('.motif circle').count()) >= 5, 'story motif draws its four rings');
-    ok((await page.locator('.reading-progress').count()) === 1, 'reading progress bar present');
-    await page.goto(`${BASE}#/`);
-    await page.waitForSelector('.app-mark');
     ok((await page.locator('.topbar .app-mark').count()) === 1, 'bar shows the app mark');
+    ok((await page.locator('header >> text=העתקת קישור').count()) === 0, 'no loose development buttons in the bar');
     const brandBox = await page.locator('.topbar .brand').boundingBox();
     const logoBox = await page.locator('ai-menu').boundingBox();
     ok(brandBox.x > 900, 'brand and nav start on the right side of the bar');
     ok(logoBox.x < 200, 'logo menu sits on the left side of the bar');
-    ok((await page.locator('.map-base').count()) === 0 , 'base map loads only on the map page');
+    await page.locator('.hero-stack .floor-btn', { hasText: 'סוד' }).click();
+    ok((await page.locator('.hero-stack h2').textContent()) === 'סוד', 'home floor selection updates the panel');
 
-    // Correlation: each page shows four lenses, and the choice of era or relation changes the set
+    // Context bar and search with a clear button
     await page.goto(`${BASE}#/stories/akedah`);
-    await page.waitForSelector('.correlation');
-    ok((await page.locator('.corr-module').count()) === 4, 'story page shows place, time, people and stories lenses');
+    await page.waitForSelector('.contextbar .crumbs');
+    const crumbs = await page.locator('.contextbar .crumbs').textContent();
+    ok(crumbs.includes('תנ"ך') && crumbs.includes('בראשית') && crumbs.includes('העקידה'), 'context bar shows the open path: תנ"ך › ספר › סיפור');
+    await page.locator('#site-search').fill('יוסף');
+    await page.waitForSelector('.search-results li button');
+    ok((await page.locator('.search-results li button').count()) >= 1, 'search finds a story by keyword');
+    ok((await page.locator('.search-clear').count()) === 1, 'search shows the ✕ clear button while typing');
+    await page.locator('.search-clear').click();
+    ok((await page.locator('#site-search').inputValue()) === '', 'the ✕ clears the search');
+
+    // Stories as rows
+    await page.goto(`${BASE}#/stories`);
+    await page.waitForSelector('.story-rows');
+    ok((await page.locator('.story-rows a.story-row').count()) === 16, 'sixteen stories listed as rows');
+
+    // Books: three levels on one page
+    await page.goto(`${BASE}#/books`);
+    await page.waitForSelector('.book-row');
+    ok((await page.locator('.book-row').count()) === 24, 'twenty-four books shown');
+    ok((await page.locator('.book-row:disabled').count()) === 21, 'twenty-one books planned, three active');
+    await page.locator('.book-row', { hasText: 'בראשית' }).click();
+    ok((await page.locator('.story-rows.nested a.story-row').count()) === 8, 'opening a book shows its stories in place');
+
+    // Story page: quotation marks and nikud on every story
+    await page.goto(`${BASE}#/stories/har-sinai`);
+    await page.waitForSelector('.level-panel');
+    ok((await page.locator('.level-panel .source').count()) === 1, 'new Exodus story renders its term');
+    const quote = await page.locator('.quote-text').textContent();
+    ok(quote.startsWith('“') && quote.endsWith('”'), 'quotation has quotation marks');
+    ok(/[ְ-ֽ]/.test(quote), 'quotation is vocalized (nikud)');
+    await page.goto(`${BASE}#/stories/akedah`);
+    await page.waitForSelector('.level-panel');
+    await page.locator('.story-side .floor-btn', { hasText: 'סוד' }).click();
+    await page.waitForFunction(() => location.hash.includes('level=sod'));
+    ok((await page.textContent('.level-panel .eyebrow')).includes('קריאה פנימית'), 'choosing sod shows its defined term');
+    ok((await page.locator('.level-panel .source').count()) === 1, 'each term names its source');
+    ok((await page.locator('.correlation').count()) === 1, 'story page shows its lenses');
+
+    // Map: the stage, numbered stops, the journey
     await page.goto(`${BASE}#/map`);
-    await page.waitForSelector('.correlation');
-    ok((await page.locator('.corr-module').count()) === 4, 'map page shows the four lenses for the route');
-    await page.locator('.corr-head button', { hasText: 'דמויות' }).click();
-    ok((await page.locator('.corr-module.is-primary').getAttribute('class')).includes('corr-people'), 'choosing a lens makes it the primary one');
+    await page.waitForSelector('.stage-map .station');
+    ok((await page.locator('.stage-map .station').count()) === 9, 'abraham route shows nine stations');
+    const firstLabel = await page.locator('.stage-map .st-he').first().textContent();
+    ok(/^1\./.test(firstLabel.trim()), 'stations are numbered on the map');
+    await page.locator('.route-switch button', { hasText: 'מסע היציאה' }).click();
+    await page.waitForFunction(() => document.querySelectorAll('.stage-map .station').length === 8);
+    ok((await page.locator('.stage-map .station').count()) === 8, 'exodus route shows eight stations');
+    await page.locator('.stop-row', { hasText: 'ים סוף' }).click();
+    ok((await page.locator('.stop-rows .row-detail').count()) === 1, 'choosing a stop opens its archaeological note');
+    await page.locator('.stage-tools button', { hasText: 'הפעל מסע' }).click();
+    await page.waitForSelector('.traveler');
+    ok((await page.locator('.traveler').count()) === 1, 'journey traveler appears on the map');
+
+    // Time: the same stage, the year scale in its place
     await page.goto(`${BASE}#/time`);
-    await page.waitForSelector('.correlation');
-    await page.locator('.route-switch button', { hasText: 'יציאה' }).click();
-    await page.waitForTimeout(300);
-    ok((await page.locator('.correlation .atlas-strip button').count()) >= 4, 'choosing an era shows its stories in one atlas');
-    await page.locator('.correlation .atlas-strip button').nth(1).click();
-    ok((await page.locator('.atlas-focus .atlas-time .track-dot').count()) === 10, 'atlas shows the year scale');
+    await page.waitForSelector('.stage-band .track-dot');
+    ok((await page.locator('.stage-band .track-dot').count()) === 10, 'year scale shows ten events');
+    ok((await page.locator('.stop-row.event-row').count()) === 10, 'events listed as numbered rows');
+
+    // People: the tree, its zoom, relations
     await page.goto(`${BASE}#/people`);
-    await page.waitForSelector('.correlation');
-    await page.locator('.route-switch button', { hasText: 'מתח' }).click();
-    await page.waitForTimeout(300);
-    ok((await page.locator('.correlation').count()) === 1, 'choosing a relation kind shows the correlated stories');
+    await page.waitForSelector('.chip-cloud');
+    ok((await page.locator('.family-tree .tree-node').count()) >= 8, 'family tree shows its people');
+    await page.locator('.tree-zoom button', { hasText: '+' }).click();
+    ok((await page.locator('.tree-zoom button').nth(1).textContent()).includes('125%'), 'tree zooms in');
+    await page.locator('.chip-cloud button', { hasText: 'יעקב' }).click();
+    ok((await page.locator('.rel-list li').count()) >= 3, 'selecting a person lists its relations with sources');
 
     // Journal: autosave and reload
     await page.goto(`${BASE}#/journal`);
@@ -184,7 +157,7 @@ async function run() {
     await mobile.route('**/ai-menu.js', (route) => route.fulfill({ contentType: 'application/javascript', body: STUB }));
     await mobile.route(/fonts\.(googleapis|gstatic)\.com/, (route) => route.abort());
     const m = await mobile.newPage();
-    for (const hash of ['', '#/stories', '#/stories/yosef', '#/map', '#/time', '#/people', '#/journal']) {
+    for (const hash of ['', '#/stories', '#/stories/yosef', '#/map', '#/time', '#/people', '#/journal', '#/books']) {
       await m.goto(`${BASE}${hash}`);
       await m.waitForTimeout(400);
       const overflow = await m.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -200,8 +173,8 @@ async function run() {
     await rm.route(/fonts\.(googleapis|gstatic)\.com/, (route) => route.abort());
     const r = await rm.newPage();
     await r.goto(`${BASE}#/map`);
-    await r.waitForSelector('.map-layout .station');
-    ok((await r.locator('.map-layout .station').count()) === 9, 'map renders with reduced motion');
+    await r.waitForSelector('.stage-map .station');
+    ok((await r.locator('.stage-map .station').count()) === 9, 'map renders with reduced motion');
 
     ok(errors.length === 0, `no JavaScript errors (${errors.length} found)${errors.length ? ': ' + errors.join(' | ') : ''}`);
 

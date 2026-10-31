@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion, MotionConfig, useScroll, useSpring } from 'framer-motion';
 import { useRoute } from './lib/hash';
 import TopBar from './components/TopBar';
+import ContextBar from './components/ContextBar';
 import HomePage from './pages/HomePage';
 import StoriesPage from './pages/StoriesPage';
 import StoryPage from './pages/StoryPage';
@@ -51,6 +52,7 @@ export default function App() {
       <motion.div className="reading-progress" style={{ scaleX: progress }} aria-hidden="true" />
       <a className="skip" href="#main">דילוג לתוכן</a>
       <TopBar active={section} />
+      <ContextBar />
       <main id="main" className="page">
         <motion.div key={`${section}-${parts[1] ?? ''}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           {page}
