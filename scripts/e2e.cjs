@@ -90,7 +90,7 @@ async function run() {
     ok((await page.textContent('.level-panel h2')).length > 0, 'story shows the pshat floor by default');
     await page.locator('.story-side .floor-btn', { hasText: 'סוד' }).click();
     await page.waitForFunction(() => location.hash.includes('level=sod'));
-    ok((await page.textContent('.level-panel .eyebrow')).includes('הגג'), 'choosing sod shows the roof floor');
+    ok((await page.textContent('.level-panel .eyebrow')).includes('קריאה פנימית'), 'choosing sod shows its defined term');
     ok((await page.locator('.level-panel .source').count()) === 1, 'each floor names its source');
     await page.screenshot({ path: path.join(SHOTS, 'story-desktop.png'), fullPage: true });
 

@@ -18,7 +18,7 @@ interface Props {
 export default function IsoStack({ active, onSelect }: Props) {
   return (
     <div className="iso">
-      <svg viewBox="0 0 300 320" className="iso-svg" role="group" aria-label="ארבע קומות הפרשנות">
+      <svg viewBox="0 0 300 320" className="iso-svg" role="group" aria-label="ארבעה מושגי הפרשנות">
         {LEVELS.map((lv, i) => {
           const cy = 240 - i * 62;
           const top = `150,${cy - 40} 250,${cy} 150,${cy + 40} 50,${cy}`;

@@ -1,11 +1,27 @@
 import { motion } from 'framer-motion';
-import { TIMELINE, ERA_COLOR, type Era } from '../content/timeline';
+import { TIMELINE, ERA_COLOR, ERA_SPAN, type Era } from '../content/timeline';
 
-// A ruler in biblical order. Era bands sit above it; each event is a tick, labels alternate above and below.
-// The spacing is by order, not by years: no date is implied where the text gives none.
+// A true year scale: 2000 לפנה"ס to 100 לספירה. Position is the year, not the order.
+// Dates are approximate where the event's `when` says so.
 const W = 1000;
-const LEFT = 40;
-const RIGHT = 960;
+const X0 = 40;
+const X1 = 960;
+const Y_MIN = -2000;
+const Y_MAX = 100;
+const xOf = (year: number) => X0 + ((year - Y_MIN) / (Y_MAX - Y_MIN)) * (X1 - X0);
+
+// Bands along the year scale. The second destruction (70 לספירה) is its own segment of the same era.
+const SEGMENTS: { era: Era; from: number; to: number; key: string }[] = [
+  { era: 'אבות', from: ERA_SPAN.אבות[0], to: ERA_SPAN.אבות[1], key: 'אבות' },
+  { era: 'יציאה', from: ERA_SPAN.יציאה[0], to: ERA_SPAN.יציאה[1], key: 'יציאה' },
+  { era: 'מלוכה', from: ERA_SPAN.מלוכה[0], to: ERA_SPAN.מלוכה[1], key: 'מלוכה' },
+  { era: 'חורבן', from: ERA_SPAN.חורבן[0], to: ERA_SPAN.חורבן[1], key: 'חורבן-1' },
+  { era: 'שיבה', from: ERA_SPAN.שיבה[0], to: -300, key: 'שיבה' },
+  { era: 'חורבן', from: -300, to: 100, key: 'חורבן-2' },
+];
+
+const TICKS = [-2000, -1750, -1500, -1250, -1000, -750, -500, -250, 0, 100];
+const tickLabel = (y: number) => (y < 0 ? `${Math.abs(y)}` : y === 0 ? '0' : `${y}`);
 
 interface Props {
   highlightEras?: Era[];
@@ -15,41 +31,31 @@ interface Props {
 export default function TimeTrack({ highlightEras, highlightIds }: Props) {
   const focusEras = highlightEras ?? [];
   const focusIds = highlightIds ?? [];
-  const dimmed = (on: boolean) => (on || (focusEras.length === 0 && focusIds.length === 0) ? 1 : 0.28);
-  const n = TIMELINE.length;
-  const step = (RIGHT - LEFT) / (n - 1);
-  const xs = TIMELINE.map((_, i) => LEFT + i * step);
-
-  // Bands are drawn per contiguous run of one era, so a return to an era gets its own label.
-  const runs: { era: Era; first: number; last: number }[] = [];
-  TIMELINE.forEach((ev, i) => {
-    const prev = runs[runs.length - 1];
-    if (prev && prev.era === ev.era && prev.last === i - 1) prev.last = i;
-    else runs.push({ era: ev.era, first: i, last: i });
-  });
-  const bands = runs.map((r) => {
-    const x0 = r.first === 0 ? 0 : (xs[r.first - 1] + xs[r.first]) / 2;
-    const x1 = r.last === n - 1 ? W : (xs[r.last] + xs[r.last + 1]) / 2;
-    return { era: r.era, x0, x1, key: `${r.era}-${r.first}` };
-  });
+  const idle = focusEras.length === 0 && focusIds.length === 0;
+  const dimmed = (on: boolean) => (on || idle ? 1 : 0.28);
 
   return (
     <div className="time-track">
-      <svg viewBox={`0 0 ${W} 210`} className="time-svg" role="group" aria-label="ציר זמן מקראי">
-        {bands.map((b, i) => (
-          <g key={b.key}>
-            <rect x={b.x0} y={0} width={b.x1 - b.x0} height={46} fill={ERA_COLOR[b.era]} opacity={dimmed(focusEras.includes(b.era))} />
-            <text x={(b.x0 + b.x1) / 2} y={28} textAnchor="middle" className="band-label" style={{ direction: 'rtl' }}>
-              {b.era}
-            </text>
-            {i > 0 && <line x1={b.x0} y1={0} x2={b.x0} y2={46} className="band-divider" />}
-          </g>
-        ))}
+      <svg viewBox={`0 0 ${W} 230`} className="time-svg" role="group" aria-label="ציר זמן מקראי לפי שנים">
+        {SEGMENTS.map((seg) => {
+          const x0 = xOf(seg.from);
+          const x1 = xOf(seg.to);
+          return (
+            <g key={seg.key}>
+              <rect x={x0} y={0} width={x1 - x0} height={46} fill={ERA_COLOR[seg.era]} opacity={dimmed(focusEras.includes(seg.era))} />
+              {x1 - x0 > 60 && (
+                <text x={(x0 + x1) / 2} y={28} textAnchor="middle" className="band-label" style={{ direction: 'rtl' }}>
+                  {seg.era}
+                </text>
+              )}
+            </g>
+          );
+        })}
 
         <motion.line
-          x1={LEFT}
+          x1={X0}
           y1={120}
-          x2={RIGHT}
+          x2={X1}
           y2={120}
           className="track-line"
           initial={{ pathLength: 0 }}
@@ -57,18 +63,31 @@ export default function TimeTrack({ highlightEras, highlightIds }: Props) {
           transition={{ duration: 1.4, ease: 'easeInOut' }}
         />
 
+        {TICKS.map((y) => (
+          <g key={y}>
+            <line x1={xOf(y)} y1={114} x2={xOf(y)} y2={126} className="year-tick" />
+            <text x={xOf(y)} y={216} textAnchor="middle" className="year-label">
+              {tickLabel(y)}
+            </text>
+          </g>
+        ))}
+
         {TIMELINE.map((ev, i) => {
           const above = i % 2 === 0;
-          const label = ev.title.length > 22 ? `${ev.title.slice(0, 21)}…` : ev.title;
-          // Labels stay centered and are clamped inside the viewBox, so no edge label is cut.
-          const labelX = Math.min(Math.max(xs[i], 110), W - 110);
+          const x = xOf(ev.year);
+          const label = ev.title.length > 20 ? `${ev.title.slice(0, 19)}…` : ev.title;
+          // Two label rows per side, so neighbouring events in the same century do not overlap.
+          const row = Math.floor(i / 2) % 2;
+          const labelY = above ? (row ? 62 : 80) : (row ? 190 : 168);
+          const stemEnd = above ? (row ? 62 : 80) + 4 : (row ? 190 : 168) - 14;
+          const on = focusIds.includes(ev.id);
           return (
             <motion.g
               key={ev.id}
               className="track-dot"
               role="button"
               tabIndex={0}
-              aria-label={ev.title}
+              aria-label={`${ev.title}, ${ev.when}`}
               onClick={() => document.getElementById(ev.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -77,27 +96,23 @@ export default function TimeTrack({ highlightEras, highlightIds }: Props) {
                 }
               }}
               initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: focusIds.includes(ev.id) ? 1.35 : 1, opacity: dimmed(focusIds.length === 0 || focusIds.includes(ev.id)) }}
+              animate={{ scale: on ? 1.35 : 1, opacity: dimmed(idle || on) }}
               transition={{ delay: 0.4 + i * 0.1, duration: 0.3 }}
             >
-              <line x1={xs[i]} y1={46} x2={xs[i]} y2={120} className="track-stem" />
-              <circle cx={xs[i]} cy={120} r={22} fill="transparent" />
-              <circle cx={xs[i]} cy={120} r={9} fill={ERA_COLOR[ev.era]} stroke="var(--ink)" strokeWidth={2} />
-              <line x1={xs[i]} y1={120} x2={xs[i]} y2={above ? 150 : 90} className="track-stem" />
-              <text
-                x={labelX}
-                y={above ? 168 : 80}
-                textAnchor="middle"
-                className="track-label"
-                style={{ direction: 'rtl' }}
-              >
+              <line x1={x} y1={46} x2={x} y2={120} className="track-stem" />
+              <circle cx={x} cy={120} r={22} fill="transparent" />
+              <circle cx={x} cy={120} r={9} fill={ERA_COLOR[ev.era]} stroke="var(--ink)" strokeWidth={2} />
+              <line x1={x} y1={120} x2={x} y2={stemEnd} className="track-stem" />
+              <text x={Math.min(Math.max(x, 110), W - 110)} y={labelY} textAnchor="middle" className="track-label" style={{ direction: 'rtl' }}>
                 {label}
               </text>
             </motion.g>
           );
         })}
       </svg>
-      <p className="source-line">לחצו על נקודה כדי לגלול אל האירוע. המרווחים הם סדר, לא זמן. הרצועות צבועות לפי תקופה.</p>
+      <p className="source-line">
+        המספרים הם שנים לפני הספירה משמאל עד 0, ואחריהם שנים לספירה. כל אירוע מסומן כ"הערכה" או "מוסכם בחקר" בכרטיס שלו.
+      </p>
     </div>
   );
 }

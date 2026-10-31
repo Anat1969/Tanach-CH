@@ -1,6 +1,7 @@
 import Rich from '../components/Rich';
 import { BOOKS, SECTIONS } from '../content/books';
 import { STORIES } from '../content/stories';
+import { BookSequence } from '../components/BookRail';
 
 export default function BooksPage() {
   const built = BOOKS.filter((b) => STORIES.some((s) => s.book === b.id)).length;
@@ -13,6 +14,10 @@ export default function BooksPage() {
           <Rich text={`**${built}** ספרים פעילים כרגע. שאר הספרים נבנים בשלבים, כל שלב כשחרור נפרד.`} />
         </p>
       </header>
+
+      <section className="block">
+        <BookSequence />
+      </section>
 
       {SECTIONS.map((section) => (
         <section key={section} className="block">

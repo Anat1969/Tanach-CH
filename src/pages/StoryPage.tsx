@@ -4,6 +4,9 @@ import IsoStack from '../components/IsoStack';
 import Motif from '../components/Motif';
 import Correlation from '../components/Correlation';
 import { ART } from '../content/art';
+import { QUOTE_VOCAL } from '../content/quotes';
+import { STORY_CHAPTERS } from '../content/chapters';
+import { BookRail } from '../components/BookRail';
 import Rich from '../components/Rich';
 import { STORIES } from '../content/stories';
 import { ROUTES } from '../content/route';
@@ -73,13 +76,14 @@ export default function StoryPage({ id, level }: Props) {
       </header>
 
       <blockquote className="quote">
-        <p>{story.quote.text}</p>
+        <p className="quote-text" lang="he">“{QUOTE_VOCAL[story.id] ?? story.quote.text}”</p>
+        {!QUOTE_VOCAL[story.id] && <p className="quote-note">הנוסח ללא ניקוד. הניקוד ממתין לאימות מול הטקסט.</p>}
         <cite>{story.quote.source}</cite>
       </blockquote>
 
       <div className="story-layout">
         <aside className="story-side">
-          <p className="eyebrow">בחרו קומה</p>
+          <p className="eyebrow">בחרו מושג פרשני</p>
           <IsoStack active={active.id} onSelect={choose} />
         </aside>
 
@@ -142,6 +146,12 @@ export default function StoryPage({ id, level }: Props) {
               </a>
             ))}
           </div>
+        </section>
+      )}
+
+      {STORY_CHAPTERS[story.id] && (
+        <section className="block">
+          <BookRail bookId={STORY_CHAPTERS[story.id].book} from={STORY_CHAPTERS[story.id].from} to={STORY_CHAPTERS[story.id].to} />
         </section>
       )}
 

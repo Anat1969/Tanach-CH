@@ -1317,3 +1317,133 @@ h3 {
   padding: 0;
   margin-top: var(--s3);
 }
+
+/* ===== Geographic base map (Natural Earth, public domain) ===== */
+.map-svg .map-sea {
+  fill: #cfdde9;
+}
+.map-svg .map-land {
+  fill: #efe6d1;
+  stroke: #9c8b6e;
+  stroke-width: 0.6;
+}
+.map-svg .map-lake {
+  fill: #9dbcd6;
+  stroke: #5f8fb8;
+  stroke-width: 0.8;
+}
+.map-svg .map-river {
+  fill: none;
+  stroke: #5f8fb8;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.geo-label {
+  font-family: var(--display);
+  font-size: 13px;
+  fill: #5d5750;
+  paint-order: stroke;
+  stroke: #efe6d1;
+  stroke-width: 3px;
+}
+.geo-water {
+  fill: #3f6b8a;
+  font-style: italic;
+  stroke: #cfdde9;
+}
+.geo-river {
+  fill: #3f6b8a;
+  font-size: 12px;
+  stroke: #efe6d1;
+}
+.geo-land {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+.map-scale-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: #5d5750;
+}
+
+/* ===== Quotes, book rail, book sequence ===== */
+.quote-text {
+  font-family: var(--display);
+  font-size: clamp(26px, 3.6vw, 40px);
+  line-height: 1.6;
+  direction: rtl;
+}
+.quote-note {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: var(--s2);
+}
+.book-rail,
+.book-seq {
+  margin: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: var(--s3) var(--s4);
+}
+.rail-svg,
+.seq-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.rail-line {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.rail-tick {
+  stroke: #8a7f72;
+  stroke-width: 1.2;
+}
+.rail-tick.is-focus {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+.rail-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  fill: #5d5750;
+}
+.rail-num.is-focus {
+  fill: var(--ink);
+  font-weight: 600;
+}
+.rail-focus {
+  fill: rgba(255, 224, 102, 0.55);
+}
+.seq-label {
+  font-family: var(--display);
+  font-size: 14px;
+  fill: #5d5750;
+}
+.seq-label.is-built {
+  fill: #fbf8f2;
+}
+.seq-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  margin-top: var(--s2);
+  font-size: 14px;
+}
+.zoom-switch {
+  margin-bottom: var(--s2);
+}
+.dig-note {
+  font-size: 15px;
+  color: #3b3530;
+  border-inline-start: 3px solid var(--line);
+  padding-inline-start: var(--s2);
+}
+.dispute-note {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--problem);
+}
