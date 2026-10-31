@@ -5,9 +5,9 @@ import { KIND_LABEL, PEOPLE, RELATIONS, type RelationKind } from '../content/peo
 import { STORIES } from '../content/stories';
 
 const KIND_COLOR: Record<RelationKind, string> = {
-  family: '#a65d2e',
-  conflict: '#b3261e',
-  bond: '#4f6b3a',
+  family: '#222222',
+  conflict: '#000000',
+  bond: '#888888',
 };
 
 // Topic: relations. Choosing a kind of relation narrows the stage; the family tree zooms in and out.

@@ -8,12 +8,14 @@ import { TREES } from '../content/families';
 import { ERA_CONTEXT } from '../content/context';
 import { ART } from '../content/art';
 import type { Story } from '../types';
+import { orderStories } from '../content/order';
+import { PLOTS } from '../content/plots';
 
 // The same stage on every topic page, in the same place:
 // 1. the year scale (top band), 2. the map (left) and the family tree (right), 3. the numbered story rows.
 // The story in focus lights its point on the scale, its stops on the map, and its people in the tree.
 export default function Stage({
-  stories,
+  stories: unordered,
   eras,
   route,
   focusId,
@@ -25,6 +27,7 @@ export default function Stage({
   focusId: string;
   onFocus: (id: string) => void;
 }) {
+  const stories = orderStories(unordered);
   const [zoom, setZoom] = useState<'wide' | 'close'>('wide');
   const [playToken, setPlayToken] = useState(0);
   const focus = stories.find((s) => s.id === focusId) ?? stories[0];
@@ -85,9 +88,8 @@ export default function Stage({
               </button>
               {s.id === focus?.id && (
                 <div className="row-detail">
-                  <p>
-                    {ERA_CONTEXT[s.era].years}
-                  </p>
+                  <p>{PLOTS[s.id]}</p>
+                  <p className="source">{ERA_CONTEXT[s.era].years}</p>
                   {ART[s.id] && <p className="source">תמונה: {ART[s.id].title}, {ART[s.id].artist}, {ART[s.id].year}</p>}
                   <p>
                     <a className="chip press" href={`#/stories/${s.id}`}>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { PEOPLE } from '../content/people';
 import type { Tree, UnionKind } from '../content/families';
 
@@ -23,6 +23,8 @@ interface Props {
 // Generations as rows. Couples share a line; children hang from a bus under their parents.
 export default function FamilyTree({ tree, selected = '', onPick = () => undefined, highlight = [] }: Props) {
   const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
   const pos = new Map(tree.nodes.map((n) => [n.id, n]));
   const center = (id: string) => {
     const n = pos.get(id);
@@ -66,11 +68,25 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
   return (
     <div className="tree-wrap">
       <div className="tree-zoom" role="group" aria-label="זום העץ">
-        <button type="button" className="chip press" onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))} aria-label="התקרבות">−</button>
-        <button type="button" className="chip press" onClick={() => setZoom(1)} aria-label="איפוס זום">{Math.round(zoom * 100)}%</button>
-        <button type="button" className="chip press" onClick={() => setZoom((z) => Math.min(2, z + 0.25))} aria-label="הגדלה">+</button>
+        <button type="button" className="chip press" onClick={() => setZoom((z) => Math.max(0.4, z / 1.25))} aria-label="התקרבות">−</button>
+        <button type="button" className="chip press" onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} aria-label="איפוס זום">{Math.round(zoom * 100)}%</button>
+        <button type="button" className="chip press" onClick={() => setZoom((z) => Math.min(2.5, z * 1.25))} aria-label="הגדלה">+</button>
       </div>
-      <div className="tree-stage" style={{ zoom }}>
+      <div
+        className="tree-view"
+        onPointerDown={(e) => {
+          drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y };
+          (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+        }}
+        onPointerMove={(e) => {
+          const d = drag.current;
+          if (d) setPan({ x: d.px + (e.clientX - d.x), y: d.py + (e.clientY - d.y) });
+        }}
+        onPointerUp={() => (drag.current = null)}
+        onPointerCancel={() => (drag.current = null)}
+        onWheel={(e) => setZoom((z) => Math.min(2.5, Math.max(0.4, z * (e.deltaY < 0 ? 1.1 : 0.9))))}
+      >
+      <div className="tree-stage" style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})` }}>
     <svg viewBox={`0 0 ${tree.w} ${tree.h}`} className="family-tree" role="img" aria-label={tree.he} style={{ direction: 'ltr' }}>
       {/* Links first, so boxes sit on top. */}
       {tree.unions.map((u) => {
@@ -142,6 +158,7 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
         );
       })}
     </svg>
+      </div>
       </div>
     </div>
   );

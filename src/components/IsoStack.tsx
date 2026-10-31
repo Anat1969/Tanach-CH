@@ -4,10 +4,10 @@ import { LEVELS, type Level } from '../types';
 // Exploded axonometric of one building: four floors floating above each other.
 // Front faces are darker, so the depth reads at a glance.
 const SHADE: Record<Level, [string, string, string]> = {
-  pshat: ['#a65d2e', '#84491f', '#66371a'],
-  remez: ['#4f6b3a', '#3e5630', '#2f4224'],
-  derash: ['#1f3558', '#18294a', '#111f38'],
-  sod: ['#5b3a6e', '#4a2f5a', '#37233f'],
+  pshat: ['#5a5a5a', '#444444', '#333333'],
+  remez: ['#7a7a7a', '#5f5f5f', '#4a4a4a'],
+  derash: ['#9a9a9a', '#7c7c7c', '#636363'],
+  sod: ['#c4c4c4', '#a5a5a5', '#8a8a8a'],
 };
 
 interface Props {

@@ -1,16 +1,16 @@
 /* Tokens: one place for color, spacing and shadow. Square corners everywhere, by house rule. */
 :root {
-  --ground: #f3eee4;
-  --paper: #fbf8f2;
+  --ground: #f2f2f0;
+  --paper: #fdfdfc;
   --ink: #1c1a17;
   --muted: #5d5750;
   --line: #d8cfbf;
-  --earth: #a65d2e;
-  --olive: #4f6b3a;
-  --night: #1f3558;
-  --plum: #5b3a6e;
-  --problem: #b3261e;
-  --solution: #2e7d4f;
+  --earth: #6b6b6b;
+  --olive: #4a4a4a;
+  --night: #222222;
+  --plum: #8a8a8a;
+  --problem: #3a3a3a;
+  --solution: #5c5c5c;
   --insight: #ffe066;
 
   --s1: 4px;
@@ -1878,4 +1878,100 @@ h3 {
 .story-row:hover .row-title {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+
+/* ===== Monochrome interface: colour only where the content has meaning ===== */
+.chip,
+.floor-btn,
+.link-btn {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  padding: 4px 8px;
+}
+.chip:hover,
+.floor-btn:hover,
+.link-btn:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
+}
+.chip.is-active,
+.floor-btn.is-active {
+  background: transparent;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+  font-weight: 600;
+}
+.card,
+.panel,
+.stage-band,
+.stage-map,
+.stage-people,
+.stage-list {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+.search {
+  min-width: 180px;
+  max-width: 240px;
+  flex: 0 1 220px;
+}
+.search input[type='search'] {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 4px 22px 4px 4px;
+  box-shadow: none;
+}
+.contextbar {
+  background: var(--ground);
+}
+.topbar {
+  background: var(--paper);
+}
+.stage .stage-band {
+  position: sticky;
+  top: 120px;
+  z-index: 20;
+}
+.tree-view {
+  height: 520px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.tree-view:active {
+  cursor: grabbing;
+}
+.tree-stage {
+  transform-origin: 0 0;
+  width: 100%;
+}
+.tree-stage .family-tree {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+}
+.plot {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: var(--s3) var(--s4);
+  margin-top: var(--s4);
+}
+.plot p:last-child {
+  margin-bottom: 0;
+  font-size: 18px;
+  line-height: 1.8;
+}
+@media (max-width: 760px) {
+  .stage .stage-band {
+    position: static;
+  }
 }
