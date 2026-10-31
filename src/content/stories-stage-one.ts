@@ -6,6 +6,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'bereshit-creation',
     book: 'bereshit',
+    era: 'ראשית',
+    people: [],
     title: 'בריאת העולם: הסדר לפני המילוי',
     ref: 'בראשית א, א-ב, ג',
     insight: 'הסדר נבנה לפני שהעולם מתמלא.',
@@ -43,6 +45,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'noah',
     book: 'bereshit',
+    era: 'ראשית',
+    people: [],
     title: 'נח והמבול: צדיק בתוך עולם שנמחק',
     ref: 'בראשית ו, ה-ט, יז',
     insight: 'הצדיק נשאר, והעולם נבנה מחדש.',
@@ -80,6 +84,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'bavel',
     book: 'bereshit',
+    era: 'ראשית',
+    people: [],
     title: 'מגדל בבל: שם שמבקשים לבנות',
     ref: 'בראשית יא, א-ט',
     insight: 'השם שביקשו לבנות נפרד בשפות.',
@@ -117,6 +123,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'yaakov-sulam',
     book: 'bereshit',
+    era: 'אבות',
+    people: ['jacob'],
     title: 'סולם יעקב: המקום שנקרא אחרי החלום',
     ref: 'בראשית כח, י-כב',
     insight: 'המקום מקבל שם רק אחרי החלום.',
@@ -154,6 +162,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'yaakov-peniel',
     book: 'bereshit',
+    era: 'אבות',
+    people: ['jacob'],
     title: 'מאבק יעקב: ברכה עם צלע',
     ref: 'בראשית לב, כד-לא',
     insight: 'הברכה באה עם צלע, לא בלי.',
@@ -191,6 +201,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'moshe-tevah',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'miriam'],
     title: 'הסל על היאור: לידת משה',
     ref: 'שמות ב, א-י',
     insight: 'הסל הקטן נושא את העתיד.',
@@ -228,6 +240,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'makot',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'aaron'],
     title: 'המכות: הלב שנשאר כבד',
     ref: 'שמות ז, יד-יב, לו',
     insight: 'הלב הקשה נשאר קשה גם אחרי הנזק.',
@@ -265,6 +279,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'pesach',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'aaron'],
     title: 'הפסח: סימן על הפתח',
     ref: 'שמות יב, א-יג',
     insight: 'הסימן על הפתח נקרא פסח.',
@@ -302,6 +318,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'har-sinai',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'aaron'],
     title: 'הר סיני: עשן לפני הדיבור',
     ref: 'שמות יט, טז-יט',
     insight: 'ההר עשן לפני שהדיבור נשמע.',
@@ -339,6 +357,8 @@ export const STAGE_ONE_STORIES: Story[] = [
   {
     id: 'egel',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'aaron'],
     title: 'העגל: זהב בזמן ההמתנה',
     ref: 'שמות לב, א-ד',
     insight: 'הזהב הופך לאלוהים בזמן שמשה למטה.',

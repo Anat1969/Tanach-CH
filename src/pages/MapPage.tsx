@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import RouteMap from '../components/RouteMap';
 import Rich from '../components/Rich';
 import { ROUTES } from '../content/route';
-import { STORIES } from '../content/stories';
 import { setRoute } from '../lib/hash';
+import Correlation from '../components/Correlation';
+import { STORIES } from '../content/stories';
 
 interface Props {
   routeId: string | null;
@@ -112,6 +113,14 @@ export default function MapPage({ routeId }: Props) {
             </>
           )}
         </motion.aside>
+      </div>
+      <div className="block">
+        <Correlation
+          key={route.id}
+          title={`סיפורים ב${route.he}`}
+          initial="time"
+          stories={STORIES.filter((s) => route.stops.some((st) => st.storyIds.includes(s.id)))}
+        />
       </div>
       <p className="source-line">מיקומים סכמטיים, לא בקנה מידה. הזיהוי של כל תחנה לפי המקרא ולפי מחקר ארכיאולוגי.</p>
     </div>

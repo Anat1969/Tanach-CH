@@ -28,9 +28,13 @@ export interface LevelContent {
   kind: SourceKind;
 }
 
+import type { Era } from './content/timeline';
+
 export interface Story {
   id: string;
   book: string;
+  era: Era;
+  people: string[];
   title: string;
   ref: string;
   insight: string;

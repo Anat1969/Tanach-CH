@@ -7,7 +7,15 @@ const W = 1000;
 const LEFT = 40;
 const RIGHT = 960;
 
-export default function TimeTrack() {
+interface Props {
+  highlightEras?: Era[];
+  highlightIds?: string[];
+}
+
+export default function TimeTrack({ highlightEras, highlightIds }: Props) {
+  const focusEras = highlightEras ?? [];
+  const focusIds = highlightIds ?? [];
+  const dimmed = (on: boolean) => (on || (focusEras.length === 0 && focusIds.length === 0) ? 1 : 0.28);
   const n = TIMELINE.length;
   const step = (RIGHT - LEFT) / (n - 1);
   const xs = TIMELINE.map((_, i) => LEFT + i * step);
@@ -30,7 +38,7 @@ export default function TimeTrack() {
       <svg viewBox={`0 0 ${W} 210`} className="time-svg" role="group" aria-label="ציר זמן מקראי">
         {bands.map((b, i) => (
           <g key={b.key}>
-            <rect x={b.x0} y={0} width={b.x1 - b.x0} height={46} fill={ERA_COLOR[b.era]} opacity={0.9} />
+            <rect x={b.x0} y={0} width={b.x1 - b.x0} height={46} fill={ERA_COLOR[b.era]} opacity={dimmed(focusEras.includes(b.era))} />
             <text x={(b.x0 + b.x1) / 2} y={28} textAnchor="middle" className="band-label" style={{ direction: 'rtl' }}>
               {b.era}
             </text>
@@ -69,7 +77,7 @@ export default function TimeTrack() {
                 }
               }}
               initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+              animate={{ scale: focusIds.includes(ev.id) ? 1.35 : 1, opacity: dimmed(focusIds.length === 0 || focusIds.includes(ev.id)) }}
               transition={{ delay: 0.4 + i * 0.1, duration: 0.3 }}
             >
               <line x1={xs[i]} y1={46} x2={xs[i]} y2={120} className="track-stem" />
