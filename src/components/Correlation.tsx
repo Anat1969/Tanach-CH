@@ -147,20 +147,32 @@ export default function Correlation({ stories, title, initial = 'stories', eras 
       <div className="corr-stories grid cards">
         {stories.map((s) => {
           const art = ART[s.id];
+          // Every card has the same frame: the image sits in it, or a note says none is verified yet.
+          // Text starts at the same line in every card because the frame has a fixed height.
           return (
-            <a key={s.id} href={`#/stories/${s.id}`} className="card link-card press">
-              {art && stories.length > 1 && (
-                <figure className="art-figure">
+            <a key={s.id} href={`#/stories/${s.id}`} className="card link-card press story-card">
+              <div className="story-card-frame">
+                {art ? (
                   <img src={art.src} alt={art.title} loading="lazy" />
-                  <figcaption className="art-caption">
+                ) : (
+                  <p className="story-card-empty">אין עדיין תמונה מאומתת לסיפור הזה.</p>
+                )}
+              </div>
+              <p className="story-card-caption">
+                {art ? (
+                  <>
                     {art.title}, {art.artist}, {art.year}. <span className="source">{art.license}</span>
-                  </figcaption>
-                </figure>
-              )}
-              <p className="eyebrow">
-                {s.era} · {s.ref}
+                  </>
+                ) : (
+                  <span className="source">תמונה: ממתין לאימות</span>
+                )}
               </p>
-              <h3>{s.title}</h3>
+              <div className="story-card-text">
+                <p className="eyebrow">
+                  {s.era} · {s.ref}
+                </p>
+                <h3>{s.title}</h3>
+              </div>
             </a>
           );
         })}
