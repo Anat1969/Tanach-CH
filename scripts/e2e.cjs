@@ -118,6 +118,23 @@ async function run() {
     ok((await page.locator('.rel-list li').count()) >= 3, 'selecting a person lists its relations with sources');
     ok((await page.locator('.rel-list .source').first().textContent()).includes('מקור:'), 'each relation has a source line');
 
+    // Motion layer
+    await page.goto(`${BASE}#/map`);
+    await page.waitForSelector('.station');
+    await page.locator('.journey-bar button').click();
+    await page.waitForSelector('.traveler');
+    ok((await page.locator('.traveler').count()) === 1, 'journey traveler appears on the map');
+    await page.goto(`${BASE}#/time`);
+    await page.waitForSelector('.track-dot');
+    ok((await page.locator('.track-dot').count()) === 10, 'timeline track shows ten dots');
+    await page.goto(`${BASE}#/people`);
+    await page.waitForSelector('.rel-graph');
+    ok((await page.locator('.rel-node').count()) === 4, 'constellation shows Abraham\'s four relations');
+    await page.goto(`${BASE}#/stories/lech-lecha`);
+    await page.waitForSelector('.motif');
+    ok((await page.locator('.motif circle').count()) >= 5, 'story motif draws its four rings');
+    ok((await page.locator('.reading-progress').count()) === 1, 'reading progress bar present');
+
     // Journal: autosave and reload
     await page.goto(`${BASE}#/journal`);
     await page.waitForSelector('textarea');

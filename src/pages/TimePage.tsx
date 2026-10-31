@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import Rich from '../components/Rich';
 import { TIMELINE, ERA_COLOR } from '../content/timeline';
+import TimeTrack from '../components/TimeTrack';
 
 export default function TimePage() {
   return (
@@ -12,6 +13,8 @@ export default function TimePage() {
           <Rich text="**עשרה** אירועים מרכזיים, לפי הסדר שבו הם מופיעים במקרא. תאריך מופיע רק כשיש **הסכמה** בחקר." />
         </p>
       </header>
+
+      <TimeTrack />
 
       <ul className="legend-eras" aria-label="תקופות">
         {Object.entries(ERA_COLOR).map(([era, color]) => (
@@ -25,6 +28,7 @@ export default function TimePage() {
         {TIMELINE.map((ev, i) => (
           <motion.li
             key={ev.id}
+            id={ev.id}
             className="tl-item"
             style={{ borderInlineStartColor: ERA_COLOR[ev.era] }}
             initial={{ x: 12 }}

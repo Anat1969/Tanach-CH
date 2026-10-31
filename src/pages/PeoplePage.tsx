@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Rich from '../components/Rich';
 import { KIND_LABEL, PEOPLE, RELATIONS, type RelationKind } from '../content/people';
+import RelationGraph from '../components/RelationGraph';
 
 const KIND_COLOR: Record<RelationKind, string> = {
   family: '#a65d2e',
@@ -42,7 +43,8 @@ export default function PeoplePage() {
         ))}
       </div>
 
-      <section className="panel">
+      <section className="panel rel-panel">
+        <RelationGraph centerId={selected} related={related} onPick={setSelected} />
         <p className="eyebrow">
           <span className="num">{related.length}</span> קשרים · {person.he}
         </p>

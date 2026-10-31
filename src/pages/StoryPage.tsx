@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import IsoStack from '../components/IsoStack';
+import Motif from '../components/Motif';
 import Rich from '../components/Rich';
 import { STORIES } from '../content/stories';
 import { ROUTES } from '../content/route';
@@ -56,6 +57,9 @@ export default function StoryPage({ id, level }: Props) {
         <p className="insight-line">
           <Rich text={story.insight} />
         </p>
+        <div className="story-motif">
+          <Motif size={120} />
+        </div>
       </header>
 
       <blockquote className="quote">
