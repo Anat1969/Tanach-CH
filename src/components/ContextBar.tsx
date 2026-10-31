@@ -2,7 +2,6 @@ import { useRoute } from '../lib/hash';
 import { BOOKS } from '../content/books';
 import { STORIES } from '../content/stories';
 import { ROUTES } from '../content/route';
-import { SearchBox } from './SearchBox';
 
 // The sticky path of what is open now: תנ"ך › חלק › ספר › סיפור. It stays visible while scrolling.
 export default function ContextBar() {
@@ -40,7 +39,6 @@ export default function ContextBar() {
           </span>
         ))}
       </nav>
-      <SearchBox />
     </div>
   );
 }

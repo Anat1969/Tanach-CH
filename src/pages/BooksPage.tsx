@@ -3,6 +3,7 @@ import { BOOKS, SECTIONS } from '../content/books';
 import { STORIES } from '../content/stories';
 import { CHAPTER_COUNT } from '../content/chapters';
 import { BookSequence } from '../components/BookRail';
+import { orderStories } from '../content/order';
 
 // Three levels on one page: the Bible (the sequence), a book (a row), and its stories (rows under it).
 // A book opens in place; nothing leaves the page.
@@ -28,7 +29,7 @@ export default function BooksPage() {
           <ol className="book-rows">
             {BOOKS.filter((b) => b.section === section).map((b) => {
               n += 1;
-              const stories = STORIES.filter((s) => s.book === b.id);
+              const stories = orderStories(STORIES.filter((s) => s.book === b.id));
               const isOpen = open === b.id;
               return (
                 <li key={b.id}>

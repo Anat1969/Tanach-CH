@@ -2,6 +2,7 @@ import Rich from '../components/Rich';
 import { STORIES } from '../content/stories';
 import { BOOKS } from '../content/books';
 import { STORY_CHAPTERS } from '../content/chapters';
+import { orderStories } from '../content/order';
 
 interface Props {
   book: string | null;
@@ -10,7 +11,7 @@ interface Props {
 // Topic: the stories. Each story is a numbered row: the book's own list, in the order of the text.
 export default function StoriesPage({ book }: Props) {
   const current = BOOKS.find((b) => b.id === book) ?? null;
-  const list = current ? STORIES.filter((s) => s.book === current.id) : STORIES;
+  const list = orderStories(current ? STORIES.filter((s) => s.book === current.id) : STORIES);
   return (
     <div className="stories">
       <header className="page-head">

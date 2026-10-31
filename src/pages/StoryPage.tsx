@@ -5,6 +5,7 @@ import Motif from '../components/Motif';
 import Correlation from '../components/Correlation';
 import { ART } from '../content/art';
 import { QUOTE_VOCAL } from '../content/quotes';
+import { PLOTS } from '../content/plots';
 import { STORY_CHAPTERS } from '../content/chapters';
 import { BookRail } from '../components/BookRail';
 import Rich from '../components/Rich';
@@ -75,9 +76,13 @@ export default function StoryPage({ id, level }: Props) {
         )}
       </header>
 
+      <section className="plot" aria-label="תקציר העלילה">
+        <p className="eyebrow">תקציר העלילה</p>
+        <p>{PLOTS[story.id]}</p>
+      </section>
+
       <blockquote className="quote">
         <p className="quote-text" lang="he">“{QUOTE_VOCAL[story.id] ?? story.quote.text}”</p>
-        <p className="quote-note">טקסט המקרא עם ניקוד: Sefaria, רישיון CC-BY-NC.</p>
         <cite>{story.quote.source}</cite>
       </blockquote>
 

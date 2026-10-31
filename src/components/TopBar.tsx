@@ -1,4 +1,5 @@
 import AppMark from './AppMark';
+import { SearchBox } from './SearchBox';
 
 const NAV: [string, string][] = [
   ['books', 'ספרים'],
@@ -30,6 +31,7 @@ export default function TopBar({ active }: { active: string }) {
           </a>
         ))}
       </nav>
+      <SearchBox />
       <ai-menu className="logo-slot"></ai-menu>
     </header>
   );
