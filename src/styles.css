@@ -878,3 +878,349 @@ mark.insight {
   font-size: 11px;
   fill: var(--muted);
 }
+
+/* ===== Redesign pass: type, bar, map, timeline, family tree ===== */
+:root {
+  --display: 'Frank Ruhl Libre', 'IBM Plex Sans Hebrew', Georgia, serif;
+}
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  color: #26221d;
+}
+h1,
+h2,
+h3,
+.brand-name,
+.quote p,
+.tree-he {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+h1 {
+  font-size: clamp(36px, 5.2vw, 62px);
+  line-height: 1.15;
+  color: var(--ink);
+}
+h2 {
+  font-size: clamp(24px, 3vw, 34px);
+}
+h3 {
+  font-size: 22px;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.lead {
+  font-weight: 300;
+  font-size: 20px;
+  color: #3b3530;
+}
+.foot {
+  font-family: var(--mono);
+}
+
+/* Bar: mark and name, then the nav on the right, the logo menu on the left. */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: 10px var(--s4);
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+.brand-name {
+  font-size: 22px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.app-mark {
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(28, 26, 23, 0.25));
+}
+.nav {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  min-width: 0;
+}
+.logo-slot {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+@media (max-width: 760px) {
+  .topbar {
+    flex-wrap: wrap;
+    padding: var(--s2) var(--s3);
+  }
+  .nav {
+    order: 3;
+    width: 100%;
+  }
+}
+
+/* Map: a real base map, both routes, a legend that names what is drawn. */
+.map-svg {
+  background: var(--paper);
+}
+.map-sea {
+  fill: #cfdde9;
+}
+.map-coast {
+  fill: none;
+  stroke: #6f8aa3;
+  stroke-width: 2;
+}
+.map-desert {
+  fill: url(#desert-dots);
+  stroke: #b89b6e;
+  stroke-width: 1;
+  opacity: 0.85;
+}
+.desert-dot {
+  fill: #c8ad7c;
+}
+.map-sinai {
+  fill: url(#sinai-lines);
+  stroke: #9b8a6e;
+  stroke-width: 1.2;
+}
+.sinai-line {
+  stroke: #b8a27c;
+  stroke-width: 1;
+}
+.map-river {
+  fill: none;
+  stroke: #5f8fb8;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+.map-river-minor {
+  stroke-width: 2;
+  opacity: 0.75;
+}
+.map-lake {
+  fill: #9dbcd6;
+  stroke: #5f8fb8;
+  stroke-width: 1;
+}
+.map-dead-sea {
+  fill: #b9c8d8;
+  stroke: #5f8fb8;
+  stroke-width: 1;
+}
+.map-hills {
+  fill: none;
+  stroke: #9b8a6e;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.7;
+}
+.map-region {
+  font-family: var(--display);
+  font-size: 15px;
+  fill: #7a6e60;
+  font-style: italic;
+}
+.map-sea-label {
+  font-family: var(--display);
+  font-size: 15px;
+  fill: #4f6a84;
+  letter-spacing: 0.04em;
+}
+.compass-ring {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.compass-needle {
+  fill: var(--ink);
+}
+.route-layer.is-active polyline {
+  filter: drop-shadow(0 1px 2px rgba(28, 26, 23, 0.25));
+}
+.map-label {
+  font-family: var(--sans);
+  font-size: 14px;
+  fill: #4a4239;
+}
+.map-label-small {
+  font-size: 12px;
+}
+.st-he {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 500;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.st-en {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: #5d5750;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+}
+.legend {
+  align-items: center;
+}
+
+/* Time: era bands, a ruler, and a timeline that alternates along a central line. */
+.band-label {
+  font-family: var(--display);
+  font-size: 18px;
+  fill: #fbf8f2;
+}
+.band-divider {
+  stroke: var(--paper);
+  stroke-width: 2;
+}
+.track-stem {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.track-line {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.track-label {
+  font-family: var(--display);
+  font-size: 15px;
+  fill: #3b3530;
+}
+.timeline {
+  position: relative;
+}
+@media (min-width: 820px) {
+  .timeline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--s5);
+    row-gap: var(--s4);
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 50%;
+    width: 2px;
+    background: var(--ink);
+    transform: translateX(50%);
+  }
+  .tl-item:nth-child(odd) {
+    grid-column: 1;
+  }
+  .tl-item:nth-child(even) {
+    grid-column: 2;
+  }
+  .tl-item::after {
+    content: '';
+    position: absolute;
+    top: 28px;
+    width: 14px;
+    height: 14px;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+  }
+  .tl-item:nth-child(odd)::after {
+    inset-inline-end: calc(-1 * var(--s5) / 2 - 7px - 2px);
+  }
+  .tl-item:nth-child(even)::after {
+    inset-inline-start: calc(-1 * var(--s5) / 2 - 7px - 2px);
+  }
+  .tl-item {
+    position: relative;
+  }
+}
+.tl-item {
+  box-shadow: 0 1px 2px rgba(28, 26, 23, 0.06), 0 10px 28px rgba(28, 26, 23, 0.08);
+}
+.tl-item h2 {
+  font-size: 26px;
+}
+.tl-item .era {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* Quotes read like a museum label: large display type. */
+.quote {
+  border-inline-start: 6px solid var(--earth);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+.quote p {
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+/* Family tree */
+.tree-panel {
+  padding: var(--s3);
+  overflow-x: auto;
+}
+.family-tree {
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+  display: block;
+}
+.tree-box {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 2px 3px rgba(28, 26, 23, 0.12));
+  transition: fill 160ms ease;
+}
+.tree-node {
+  cursor: pointer;
+  outline: none;
+}
+.tree-node:hover .tree-box {
+  fill: #f3e7d3;
+}
+.tree-node:focus-visible .tree-box,
+.tree-node.is-selected .tree-box {
+  fill: var(--insight);
+  stroke-width: 2.5;
+}
+.tree-he {
+  font-size: 20px;
+  fill: var(--ink);
+  pointer-events: none;
+}
+.tree-en {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: #5d5750;
+  pointer-events: none;
+}
+.tree-note-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: #5d5750;
+}
+.tree-panel .source-line {
+  margin-top: var(--s2);
+}
+.tree-panel .legend-eras {
+  margin-top: var(--s2);
+}
