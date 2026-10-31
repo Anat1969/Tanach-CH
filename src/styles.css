@@ -1494,3 +1494,80 @@ h3 {
 .story-card-text h3 {
   font-size: 20px;
 }
+
+/* ===== Story atlas: one linked picture per set of stories ===== */
+.atlas {
+  display: grid;
+  gap: var(--s4);
+}
+.atlas-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+.atlas-focus {
+  display: grid;
+  gap: var(--s4);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 900px) {
+  .atlas-focus {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+  .atlas-head,
+  .atlas-time {
+    grid-column: 1 / -1;
+  }
+}
+.atlas-head h2 {
+  font-size: 30px;
+}
+.atlas-insight {
+  font-size: 18px;
+  color: #3b3530;
+}
+.atlas-art {
+  margin: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: var(--s3);
+}
+.atlas-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 340px;
+  object-fit: contain;
+}
+.atlas-context {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: var(--s3) var(--s4);
+  border-inline-start: 4px solid var(--ink);
+}
+.atlas-people .family-tree {
+  min-width: 620px;
+}
+.atlas-link {
+  margin: 0;
+}
+.atlas,
+.atlas > *,
+.atlas-focus > *,
+.atlas-time,
+.atlas-geo,
+.atlas-people,
+.atlas-context {
+  min-width: 0;
+  max-width: 100%;
+}
+.atlas-people .tree-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.atlas-people .tree-scroll,
+.tree-panel,
+.corr-people .tree-scroll {
+  direction: ltr;
+}

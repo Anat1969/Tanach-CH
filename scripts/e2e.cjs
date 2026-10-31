@@ -160,7 +160,9 @@ async function run() {
     await page.waitForSelector('.correlation');
     await page.locator('.route-switch button', { hasText: 'יציאה' }).click();
     await page.waitForTimeout(300);
-    ok((await page.locator('.correlation .corr-stories a.card').count()) >= 4, 'choosing an era shows its stories');
+    ok((await page.locator('.correlation .atlas-strip button').count()) >= 4, 'choosing an era shows its stories in one atlas');
+    await page.locator('.correlation .atlas-strip button').nth(1).click();
+    ok((await page.locator('.atlas-focus .atlas-time .track-dot').count()) === 10, 'atlas shows the year scale');
     await page.goto(`${BASE}#/people`);
     await page.waitForSelector('.correlation');
     await page.locator('.route-switch button', { hasText: 'מתח' }).click();

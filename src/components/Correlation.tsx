@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import RouteMap from './RouteMap';
+import StoryAtlas from './StoryAtlas';
 import TimeTrack from './TimeTrack';
 import FamilyTree from './FamilyTree';
 import { ROUTES } from '../content/route';
@@ -144,39 +145,7 @@ export default function Correlation({ stories, title, initial = 'stories', eras 
       );
     }
     return (
-      <div className="corr-stories grid cards">
-        {stories.map((s) => {
-          const art = ART[s.id];
-          // Every card has the same frame: the image sits in it, or a note says none is verified yet.
-          // Text starts at the same line in every card because the frame has a fixed height.
-          return (
-            <a key={s.id} href={`#/stories/${s.id}`} className="card link-card press story-card">
-              <div className="story-card-frame">
-                {art ? (
-                  <img src={art.src} alt={art.title} loading="lazy" />
-                ) : (
-                  <p className="story-card-empty">אין עדיין תמונה מאומתת לסיפור הזה.</p>
-                )}
-              </div>
-              <p className="story-card-caption">
-                {art ? (
-                  <>
-                    {art.title}, {art.artist}, {art.year}. <span className="source">{art.license}</span>
-                  </>
-                ) : (
-                  <span className="source">תמונה: ממתין לאימות</span>
-                )}
-              </p>
-              <div className="story-card-text">
-                <p className="eyebrow">
-                  {s.era} · {s.ref}
-                </p>
-                <h3>{s.title}</h3>
-              </div>
-            </a>
-          );
-        })}
-      </div>
+      <StoryAtlas stories={stories} />
     );
   };
 
