@@ -3,6 +3,8 @@ import Rich from '../components/Rich';
 import FamilyTree from '../components/FamilyTree';
 import { KIND_LABEL, PEOPLE, RELATIONS, type RelationKind } from '../content/people';
 import { TREES } from '../content/families';
+import Correlation from '../components/Correlation';
+import { STORIES } from '../content/stories';
 
 const KIND_COLOR: Record<RelationKind, string> = {
   family: '#a65d2e',
@@ -13,6 +15,13 @@ const KIND_COLOR: Record<RelationKind, string> = {
 export default function PeoplePage() {
   const [treeId, setTreeId] = useState(TREES[0].id);
   const [selected, setSelected] = useState('abraham');
+  const [kind, setKind] = useState<RelationKind | null>(null);
+  // Stories whose people take part in a relation of the chosen kind.
+  const kindStories = STORIES.filter((st) =>
+    RELATIONS.some(
+      (r) => (kind === null || r.kind === kind) && (st.people.includes(r.a) || st.people.includes(r.b)),
+    ),
+  );
   const tree = TREES.find((t) => t.id === treeId) ?? TREES[0];
   const person = PEOPLE.find((p) => p.id === selected) ?? PEOPLE[0];
   const name = (id: string) => PEOPLE.find((p) => p.id === id)?.he ?? id;
@@ -56,6 +65,21 @@ export default function PeoplePage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="block">
+        <p className="eyebrow">מערכת יחסים</p>
+        <div className="route-switch" role="group" aria-label="סוג מערכת היחסים">
+          <button type="button" className={`chip press${kind === null ? ' is-active' : ''}`} aria-pressed={kind === null} onClick={() => setKind(null)}>
+            כל הקשרים
+          </button>
+          {(Object.keys(KIND_LABEL) as RelationKind[]).map((k) => (
+            <button key={k} type="button" className={`chip press${kind === k ? ' is-active' : ''}`} aria-pressed={kind === k} onClick={() => setKind(k)}>
+              {KIND_LABEL[k]}
+            </button>
+          ))}
+        </div>
+        <Correlation key={kind ?? 'all'} title={kind ? `מערכות יחסים: ${KIND_LABEL[kind]}` : 'כל מערכות היחסים'} initial="place" stories={kindStories} />
       </section>
 
       <section className="block">

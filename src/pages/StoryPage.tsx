@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import IsoStack from '../components/IsoStack';
 import Motif from '../components/Motif';
+import Correlation from '../components/Correlation';
+import { ART } from '../content/art';
 import Rich from '../components/Rich';
 import { STORIES } from '../content/stories';
 import { ROUTES } from '../content/route';
@@ -60,6 +62,14 @@ export default function StoryPage({ id, level }: Props) {
         <div className="story-motif">
           <Motif size={120} />
         </div>
+        {ART[story.id] && (
+          <figure className="art-hero">
+            <img src={ART[story.id].src} alt={ART[story.id].title} />
+            <figcaption className="art-caption">
+              {ART[story.id].title}, {ART[story.id].artist}, {ART[story.id].year}. <span className="source">{ART[story.id].license}</span>
+            </figcaption>
+          </figure>
+        )}
       </header>
 
       <blockquote className="quote">
@@ -134,6 +144,10 @@ export default function StoryPage({ id, level }: Props) {
           </div>
         </section>
       )}
+
+      <div className="block">
+        <Correlation title="הקשר לסיפור: מקום, זמן, דמויות וחדשות התקופה" initial="stories" stories={[story]} />
+      </div>
 
       <nav className="story-nav" aria-label="מעבר בין סיפורים">
         <a className="chip press" href={`#/stories/${prev.id}`}>

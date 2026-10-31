@@ -12,9 +12,11 @@ interface Props {
   onSelect: (id: string) => void;
   // Increments each time the reader presses "הפעל מסע". Zero means no journey yet.
   playToken: number;
+  // Stops linked to the stories in focus. They get a ring, the rest recede.
+  highlightStopIds?: string[];
 }
 
-export default function RouteMap({ route, selectedId, onSelect, playToken }: Props) {
+export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [] }: Props) {
   const byId = new Map(route.stops.map((s) => [s.id, s]));
   const ordered = route.path.map((id) => byId.get(id)).filter((s): s is NonNullable<typeof s> => Boolean(s));
   const d = `M${ordered.map((s) => `${s.x},${s.y}`).join(' L')}`;
@@ -100,6 +102,7 @@ export default function RouteMap({ route, selectedId, onSelect, playToken }: Pro
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 + Math.max(order, 0) * 0.12, duration: 0.3 }}
             >
+              {highlightStopIds.includes(s.id) && <circle cx={s.x} cy={s.y} r={20} className="station-focus" />}
               <circle cx={s.x} cy={s.y} r={22} className="station-hit" />
               <circle
                 cx={s.x}

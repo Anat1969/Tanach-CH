@@ -96,13 +96,13 @@ async function run() {
 
     // Map
     await page.goto(`${BASE}#/map`);
-    await page.waitForSelector('.station');
-    ok((await page.locator('.station').count()) === 9, 'abraham route shows nine stations');
+    await page.waitForSelector('.map-layout .station');
+    ok((await page.locator('.map-layout .station').count()) === 9, 'abraham route shows nine stations');
     await page.locator('.route-switch button', { hasText: 'מסע היציאה' }).click();
     await page.waitForFunction(() => location.hash.includes('route=exodus'));
-    await page.waitForFunction(() => document.querySelectorAll('.station').length === 8);
-    ok((await page.locator('.station').count()) === 8, 'exodus route shows eight stations');
-    await page.locator('.station', { hasText: 'ים סוף' }).first().locator('.station-hit').click();
+    await page.waitForFunction(() => document.querySelectorAll('.map-layout .station').length === 8);
+    ok((await page.locator('.map-layout .station').count()) === 8, 'exodus route shows eight stations');
+    await page.locator('.map-layout .station', { hasText: 'ים סוף' }).first().locator('.station-hit').click();
     ok((await page.locator('.map-detail h2').textContent()).includes('ים סוף'), 'station click opens its detail');
     await page.waitForTimeout(1700);
     await page.screenshot({ path: path.join(SHOTS, 'map-desktop.png'), fullPage: true });
@@ -121,18 +121,18 @@ async function run() {
 
     // Motion layer
     await page.goto(`${BASE}#/map`);
-    await page.waitForSelector('.station');
+    await page.waitForSelector('.map-layout .station');
     await page.locator('.journey-bar button').click();
     await page.waitForSelector('.traveler');
     ok((await page.locator('.traveler').count()) === 1, 'journey traveler appears on the map');
     await page.goto(`${BASE}#/time`);
-    await page.waitForSelector('.track-dot');
-    ok((await page.locator('.track-dot').count()) === 10, 'timeline track shows ten dots');
+    await page.waitForSelector('.time-page > .time-track .track-dot');
+    ok((await page.locator('.time-page > .time-track .track-dot').count()) === 10, 'timeline track shows ten dots');
     await page.goto(`${BASE}#/people`);
     await page.waitForSelector('.family-tree');
-    ok((await page.locator('.tree-node').count()) === 11, 'family tree shows the eleven people of Genesis');
+    ok((await page.locator('.tree-panel .tree-node').count()) === 11, 'family tree shows the eleven people of Genesis');
     ok((await page.locator('.family-tree .link').count()) >= 8, 'family tree draws marriages and descent lines');
-    await page.locator('.tree-node', { hasText: 'יוסף' }).click();
+    await page.locator('.tree-panel .tree-node', { hasText: 'יוסף' }).click();
     ok((await page.locator('.rel-list h3').first().textContent()).includes('יוסף'), 'clicking a tree node selects that person');
     await page.goto(`${BASE}#/stories/lech-lecha`);
     await page.waitForSelector('.motif');
@@ -146,6 +146,26 @@ async function run() {
     ok(brandBox.x > 900, 'brand and nav start on the right side of the bar');
     ok(logoBox.x < 200, 'logo menu sits on the left side of the bar');
     ok((await page.locator('.map-base').count()) === 0 , 'base map loads only on the map page');
+
+    // Correlation: each page shows four lenses, and the choice of era or relation changes the set
+    await page.goto(`${BASE}#/stories/akedah`);
+    await page.waitForSelector('.correlation');
+    ok((await page.locator('.corr-module').count()) === 4, 'story page shows place, time, people and stories lenses');
+    await page.goto(`${BASE}#/map`);
+    await page.waitForSelector('.correlation');
+    ok((await page.locator('.corr-module').count()) === 4, 'map page shows the four lenses for the route');
+    await page.locator('.corr-head button', { hasText: 'דמויות' }).click();
+    ok((await page.locator('.corr-module.is-primary').getAttribute('class')).includes('corr-people'), 'choosing a lens makes it the primary one');
+    await page.goto(`${BASE}#/time`);
+    await page.waitForSelector('.correlation');
+    await page.locator('.route-switch button', { hasText: 'יציאה' }).click();
+    await page.waitForTimeout(300);
+    ok((await page.locator('.correlation .corr-stories a.card').count()) >= 4, 'choosing an era shows its stories');
+    await page.goto(`${BASE}#/people`);
+    await page.waitForSelector('.correlation');
+    await page.locator('.route-switch button', { hasText: 'מתח' }).click();
+    await page.waitForTimeout(300);
+    ok((await page.locator('.correlation').count()) === 1, 'choosing a relation kind shows the correlated stories');
 
     // Journal: autosave and reload
     await page.goto(`${BASE}#/journal`);
@@ -178,8 +198,8 @@ async function run() {
     await rm.route(/fonts\.(googleapis|gstatic)\.com/, (route) => route.abort());
     const r = await rm.newPage();
     await r.goto(`${BASE}#/map`);
-    await r.waitForSelector('.station');
-    ok((await r.locator('.station').count()) === 9, 'map renders with reduced motion');
+    await r.waitForSelector('.map-layout .station');
+    ok((await r.locator('.map-layout .station').count()) === 9, 'map renders with reduced motion');
 
     ok(errors.length === 0, `no JavaScript errors (${errors.length} found)${errors.length ? ': ' + errors.join(' | ') : ''}`);
 

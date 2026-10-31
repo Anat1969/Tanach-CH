@@ -13,12 +13,14 @@ const STYLE: Record<UnionKind, { stroke: string; dash?: string; width: number }>
 
 interface Props {
   tree: Tree;
-  selected: string;
-  onPick: (id: string) => void;
+  selected?: string;
+  onPick?: (id: string) => void;
+  // People in the stories in focus; they are drawn stronger, the rest recede.
+  highlight?: string[];
 }
 
 // Generations as rows. Couples share a line; children hang from a bus under their parents.
-export default function FamilyTree({ tree, selected, onPick }: Props) {
+export default function FamilyTree({ tree, selected = '', onPick = () => undefined, highlight = [] }: Props) {
   const pos = new Map(tree.nodes.map((n) => [n.id, n]));
   const center = (id: string) => {
     const n = pos.get(id);
@@ -103,10 +105,11 @@ export default function FamilyTree({ tree, selected, onPick }: Props) {
         const p = name(n.id);
         if (!p) return null;
         const on = selected === n.id;
+        const focus = highlight.length === 0 || highlight.includes(n.id);
         return (
           <g
             key={n.id}
-            className={`tree-node${on ? ' is-selected' : ''}`}
+            className={`tree-node${on ? ' is-selected' : ''}${focus ? '' : ' is-dim'}`}
             role="button"
             tabIndex={0}
             aria-pressed={on}

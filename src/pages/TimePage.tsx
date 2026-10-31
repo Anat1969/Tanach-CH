@@ -2,8 +2,15 @@ import { motion } from 'framer-motion';
 import Rich from '../components/Rich';
 import { TIMELINE, ERA_COLOR } from '../content/timeline';
 import TimeTrack from '../components/TimeTrack';
+import Correlation from '../components/Correlation';
+import { STORIES } from '../content/stories';
+import { useState } from 'react';
+
+const ERAS = Object.keys(ERA_COLOR) as (keyof typeof ERA_COLOR)[];
 
 export default function TimePage() {
+  const [era, setEra] = useState<keyof typeof ERA_COLOR | null>(null);
+  const eraStories = STORIES.filter((s) => (era ? s.era === era : true));
   return (
     <div className="time-page">
       <header className="page-head">
@@ -14,7 +21,22 @@ export default function TimePage() {
         </p>
       </header>
 
-      <TimeTrack />
+      <div className="route-switch" role="group" aria-label="בחירת תקופה">
+        <button type="button" className={`chip press${era === null ? ' is-active' : ''}`} aria-pressed={era === null} onClick={() => setEra(null)}>
+          כל התקופות
+        </button>
+        {ERAS.map((e) => (
+          <button key={e} type="button" className={`chip press${era === e ? ' is-active' : ''}`} aria-pressed={era === e} onClick={() => setEra(e)}>
+            {e}
+          </button>
+        ))}
+      </div>
+
+      <TimeTrack highlightEras={era ? [era] : undefined} />
+
+      <div className="block">
+        <Correlation key={era ?? 'all'} title={era ? `תקופת ${era}` : 'כל הסיפורים'} initial="place" stories={eraStories} eras={era ? [era] : undefined} />
+      </div>
 
       <ul className="legend-eras" aria-label="תקופות">
         {Object.entries(ERA_COLOR).map(([era, color]) => (

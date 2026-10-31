@@ -7,6 +7,8 @@ const BASE_STORIES: Story[] = [
   {
     id: 'lech-lecha',
     book: 'bereshit',
+    era: 'אבות',
+    people: ['abraham', 'sarah'],
     title: 'לך לך: היציאה הראשונה',
     ref: 'בראשית יב, א-ט',
     insight: 'היציאה הראשונה מתחילה בקריאה, לא בידע.',
@@ -47,6 +49,8 @@ const BASE_STORIES: Story[] = [
   {
     id: 'akedah',
     book: 'bereshit',
+    era: 'אבות',
+    people: ['abraham', 'isaac'],
     title: 'העקידה: מבחן האהבה',
     ref: 'בראשית כב, א-יט',
     insight: 'מבחן שנועד לשאול על אהבה, לא על קורבן.',
@@ -87,6 +91,8 @@ const BASE_STORIES: Story[] = [
   {
     id: 'yosef',
     book: 'bereshit',
+    era: 'אבות',
+    people: ['jacob', 'joseph'],
     title: 'יוסף והכתונת: אהבה שיוצרת מרחק',
     ref: 'בראשית לז, ג-ד',
     insight: 'אהבה גלויה יוצרת מרחק בין האחים.',
@@ -127,6 +133,8 @@ const BASE_STORIES: Story[] = [
   {
     id: 'seneh',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'aaron'],
     title: 'הסנה: השם שאינו נעצר',
     ref: 'שמות ג, א-יד',
     insight: 'השם נקרא בפועל, לא בתואר.',
@@ -167,6 +175,8 @@ const BASE_STORIES: Story[] = [
   {
     id: 'yetziat',
     book: 'shemot',
+    era: 'יציאה',
+    people: ['moses', 'miriam', 'aaron'],
     title: 'בקיעת הים: המעבר בלילה',
     ref: 'שמות יד, כא-כב',
     insight: 'המעבר מתרחש בלילה, לא ביום.',
@@ -207,6 +217,8 @@ const BASE_STORIES: Story[] = [
   {
     id: 'eliyahu',
     book: 'melachim',
+    era: 'מלוכה',
+    people: ['elijah', 'elisha'],
     title: 'קול דממה דקה: הנביא בחורב',
     ref: 'מלכים א יט, ח-יג',
     insight: 'הנוכחות נשמעת בשקט, לא בסערה.',
