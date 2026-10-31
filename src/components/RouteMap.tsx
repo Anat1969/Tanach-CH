@@ -119,7 +119,7 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
                 strokeWidth={2}
               />
               <text x={labelX} y={s.y + 4} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-he" style={{ direction: 'ltr', fontSize: 16 * k * 0.8, strokeWidth: 4 * k }}>
-                {s.he}
+                {`${route.stops.indexOf(s) + 1}. ${s.he}`}
               </text>
               <text x={labelX} y={s.y + 19 * k + 4} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-en" style={{ direction: 'ltr', fontSize: 11 * k }}>
                 {s.en}

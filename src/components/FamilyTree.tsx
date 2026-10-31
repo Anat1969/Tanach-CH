@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { PEOPLE } from '../content/people';
 import type { Tree, UnionKind } from '../content/families';
 
@@ -21,6 +22,7 @@ interface Props {
 
 // Generations as rows. Couples share a line; children hang from a bus under their parents.
 export default function FamilyTree({ tree, selected = '', onPick = () => undefined, highlight = [] }: Props) {
+  const [zoom, setZoom] = useState(1);
   const pos = new Map(tree.nodes.map((n) => [n.id, n]));
   const center = (id: string) => {
     const n = pos.get(id);
@@ -62,6 +64,13 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
   const busY = siblingBus.length ? Math.min(...siblingBus.map((n) => n!.y)) - 28 : 0;
 
   return (
+    <div className="tree-wrap">
+      <div className="tree-zoom" role="group" aria-label="זום העץ">
+        <button type="button" className="chip press" onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))} aria-label="התקרבות">−</button>
+        <button type="button" className="chip press" onClick={() => setZoom(1)} aria-label="איפוס זום">{Math.round(zoom * 100)}%</button>
+        <button type="button" className="chip press" onClick={() => setZoom((z) => Math.min(2, z + 0.25))} aria-label="הגדלה">+</button>
+      </div>
+      <div className="tree-stage" style={{ zoom }}>
     <svg viewBox={`0 0 ${tree.w} ${tree.h}`} className="family-tree" role="img" aria-label={tree.he} style={{ direction: 'ltr' }}>
       {/* Links first, so boxes sit on top. */}
       {tree.unions.map((u) => {
@@ -133,5 +142,7 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
         );
       })}
     </svg>
+      </div>
+    </div>
   );
 }

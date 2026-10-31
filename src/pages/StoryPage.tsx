@@ -77,7 +77,7 @@ export default function StoryPage({ id, level }: Props) {
 
       <blockquote className="quote">
         <p className="quote-text" lang="he">“{QUOTE_VOCAL[story.id] ?? story.quote.text}”</p>
-        {!QUOTE_VOCAL[story.id] && <p className="quote-note">הנוסח ללא ניקוד. הניקוד ממתין לאימות מול הטקסט.</p>}
+        <p className="quote-note">טקסט המקרא עם ניקוד: Sefaria, רישיון CC-BY-NC.</p>
         <cite>{story.quote.source}</cite>
       </blockquote>
 
