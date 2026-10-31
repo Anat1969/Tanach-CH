@@ -1,4 +1,5 @@
 const NAV: [string, string][] = [
+  ['books', 'ספרים'],
   ['stories', 'סיפורים'],
   ['map', 'מפה'],
   ['time', 'ציר זמן'],

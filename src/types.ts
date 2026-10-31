@@ -30,6 +30,7 @@ export interface LevelContent {
 
 export interface Story {
   id: string;
+  book: string;
   title: string;
   ref: string;
   insight: string;

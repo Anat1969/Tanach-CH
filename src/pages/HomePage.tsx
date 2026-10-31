@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import IsoStack from '../components/IsoStack';
 import Rich from '../components/Rich';
 import { levelById, type Level } from '../types';
+import { STORIES } from '../content/stories';
 import { setRoute } from '../lib/hash';
 
 const CARDS: { href: string; title: string; text: string; count: string }[] = [
-  { href: '#/stories', title: 'סיפורים', text: 'שישה סיפורים, כל אחד בארבע קומות פרשנות, עם מקור לכל קומה.', count: '6 סיפורים' },
+  { href: '#/books', title: 'ספרים', text: 'עשרים וארבעה ספרים בשלבים. כרגע פעילים בראשית, שמות ומלכים.', count: '24 ספרים' },
+  { href: '#/stories', title: 'סיפורים', text: 'סיפורים בארבע קומות פרשנות, עם מקור לכל קומה.', count: `${STORIES.length} סיפורים` },
   { href: '#/map', title: 'מפה', text: 'שני מסעות על מפה סכמטית: מסע האבות ומסע היציאה.', count: '2 מסעות' },
   { href: '#/time', title: 'ציר זמן', text: 'סדר המאורעות במקרא, עם תאריכים רק במקום שיש בו הסכמה.', count: '10 אירועים' },
   { href: '#/people', title: 'יחסים', text: 'דמויות וקשריהן, וכל קשר עם הפסוק שמעיד עליו.', count: '21 דמויות' },

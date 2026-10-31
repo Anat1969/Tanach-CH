@@ -75,7 +75,14 @@ async function run() {
     // Stories
     await page.goto(`${BASE}#/stories`);
     await page.waitForSelector('.stories a.card');
-    ok((await page.locator('.stories a.card').count()) === 6, 'six stories listed');
+    ok((await page.locator('.stories a.card').count()) === 16, 'sixteen stories listed');
+    await page.goto(`${BASE}#/books`);
+    await page.waitForSelector('.book-card');
+    ok((await page.locator('.book-card').count()) === 24, 'twenty-four books shown');
+    ok((await page.locator('.book-card.is-planned').count()) === 21, 'twenty-one books planned, three active');
+    await page.goto(`${BASE}#/stories/har-sinai`);
+    await page.waitForSelector('.level-panel');
+    ok((await page.locator('.level-panel .source').count()) === 1, 'new Exodus story renders its floor');
 
     // Story with floors
     await page.goto(`${BASE}#/stories/akedah`);

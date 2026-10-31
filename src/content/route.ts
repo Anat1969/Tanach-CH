@@ -58,7 +58,7 @@ export const ROUTES: RouteDef[] = [
       { id: 'yamsuf', he: 'ים סוף', en: 'Yam Suf', x: 130, y: 655, side: 'l', ref: 'שמות יד, כא-כב', note: 'הבקיעה והמעבר (יד, כא-כב). השם מתפרש בחקר כ"ים הקנים", ומכאן התרגום Sea of Reeds.', onPath: true, storyIds: ['yetziat'] },
       { id: 'marah', he: 'מרה', en: 'Marah', x: 200, y: 680, side: 'r', ref: 'שמות טו, כג', note: 'המים המרים (טו, כג).', onPath: true, storyIds: [] },
       { id: 'elim', he: 'אילים', en: 'Elim', x: 262, y: 712, side: 'r', ref: 'שמות טו, כז', note: 'שתים עשרה עיינות ושבעים תמרים (טו, כז).', onPath: true, storyIds: [] },
-      { id: 'sinai', he: 'הר סיני וחורב', en: 'Mount Sinai (Horeb)', x: 290, y: 738, side: 'r', ref: 'שמות יט, א-ב; מלכים א יט, ח', note: 'ההר שבו נקרא השם, ושאליו חוזר אליהו.', onPath: true, storyIds: ['seneh', 'eliyahu'] },
+      { id: 'sinai', he: 'הר סיני וחורב', en: 'Mount Sinai (Horeb)', x: 290, y: 738, side: 'r', ref: 'שמות יט, א-ב; מלכים א יט, ח', note: 'ההר שבו נקרא השם, ושאליו חוזר אליהו.', onPath: true, storyIds: ['seneh', 'eliyahu', 'har-sinai'] },
     ],
   },
 ];
