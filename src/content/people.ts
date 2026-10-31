@@ -62,6 +62,7 @@ export const RELATIONS: Relation[] = [
   { a: 'moses', b: 'miriam', kind: 'family', label: 'אחות', ref: 'שמות ב, ד' },
   { a: 'moses', b: 'joshua', kind: 'bond', label: 'משרת ויורש', ref: 'דברים לד, ט' },
   { a: 'samuel', b: 'saul', kind: 'bond', label: 'נביא ומלך', ref: 'שמואל א, ט-י' },
+  { a: 'saul', b: 'jonathan', kind: 'family', label: 'בן', ref: 'שמואל א, יד, מט' },
   { a: 'saul', b: 'david', kind: 'conflict', label: 'שאול רודף את דוד', ref: 'שמואל א, יח-כד' },
   { a: 'david', b: 'jonathan', kind: 'bond', label: 'נפש יהונתן נקשרה בנפש דוד', ref: 'שמואל א, יח, א' },
   { a: 'elijah', b: 'elisha', kind: 'bond', label: 'מעביר לו את המעטפת', ref: 'מלכים א, יט, יט-כא' },

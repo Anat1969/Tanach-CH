@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate, motion, MotionConfig } from 'framer-motion';
-import type { RouteDef } from '../content/route';
+import { ROUTES, type RouteDef } from '../content/route';
+import MapBase from './MapBase';
 
-const SEA = 'M0 0 L95 0 C70 120 110 220 88 330 C66 440 120 520 96 600 C78 670 60 720 40 760 L0 760 Z';
-const JORDAN = 'M420 0 C400 120 380 220 345 330 C320 430 300 520 285 600';
+export const MAP_VIEW = '0 0 640 780';
 const JOURNEY_SECONDS = 12;
 
 interface Props {
@@ -23,13 +23,11 @@ export default function RouteMap({ route, selectedId, onSelect, playToken }: Pro
   const [t, setT] = useState(0);
   const [len, setLen] = useState(0);
 
-  // A new route starts from the first station.
   useEffect(() => {
     setT(0);
     setLen(guideRef.current?.getTotalLength() ?? 0);
   }, [route.id]);
 
-  // Each press runs the journey once. Reduced motion jumps to the end.
   useEffect(() => {
     if (playToken === 0) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,59 +36,55 @@ export default function RouteMap({ route, selectedId, onSelect, playToken }: Pro
       return;
     }
     setT(0);
-    const controls = animate(0, 1, {
-      duration: JOURNEY_SECONDS,
-      ease: 'linear',
-      onUpdate: (v) => setT(v),
-    });
+    const controls = animate(0, 1, { duration: JOURNEY_SECONDS, ease: 'linear', onUpdate: (v) => setT(v) });
     return () => controls.stop();
   }, [playToken]);
 
   const traveler = len > 0 && guideRef.current ? guideRef.current.getPointAtLength(t * len) : ordered[0];
   const segments = Math.max(ordered.length - 1, 1);
-  const reachedIndex = (i: number) => t >= i / segments - 0.001;
+  const reached = (i: number) => t >= i / segments - 0.001;
 
   return (
     <MotionConfig reducedMotion="user">
-      <svg viewBox={route.view} className="map-svg" role="img" aria-labelledby="map-title" style={{ direction: 'ltr' }}>
+      <svg viewBox={MAP_VIEW} className="map-svg" role="img" aria-labelledby="map-title" style={{ direction: 'ltr' }}>
         <title id="map-title">{`מפה סכמטית: ${route.he}`}</title>
-        <rect x="-100" y="-100" width="900" height="1000" className="map-ground" />
-        <path d={SEA} className="map-sea" />
-        <path d={JORDAN} className="map-river" />
-        <ellipse cx="285" cy="605" rx="12" ry="26" className="map-dead-sea" />
-        <text x="405" y="150" className="map-label" style={{ direction: 'rtl' }}>
-          הירדן
-        </text>
-        <text x="300" y="652" className="map-label map-label-small" style={{ direction: 'rtl' }}>
-          ים המלח
-        </text>
-        <text x="520" y="40" className="map-label map-label-small" style={{ direction: 'rtl' }}>
-          ארץ כנען (סכמטי)
-        </text>
+        <MapBase />
+
+        {/* Both routes are drawn; the chosen one is full strength. */}
+        {ROUTES.map((r) => {
+          const pts = r.path
+            .map((id) => r.stops.find((s) => s.id === id))
+            .filter((s): s is NonNullable<typeof s> => Boolean(s));
+          const active = r.id === route.id;
+          return (
+            <g key={r.id} className={`route-layer${active ? ' is-active' : ''}`}>
+              <polyline
+                points={pts.map((s) => `${s.x},${s.y}`).join(' ')}
+                fill="none"
+                stroke={r.color}
+                strokeWidth={active ? 6 : 3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray={active ? undefined : '2 8'}
+                opacity={active ? 1 : 0.45}
+              />
+              {!active &&
+                r.stops.map((s) => <circle key={s.id} cx={s.x} cy={s.y} r={4} fill={r.color} opacity={0.6} />)}
+            </g>
+          );
+        })}
 
         <path ref={guideRef} d={d} className="route-guide" />
 
-        <motion.path
-          d={d}
-          fill="none"
-          stroke={route.color}
-          strokeWidth={6}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.6, ease: 'easeInOut' }}
-        />
-
         {route.stops.map((s) => {
           const selected = selectedId === s.id;
-          const labelX = s.side === 'l' ? s.x - 16 : s.x + 16;
           const order = ordered.findIndex((o) => o.id === s.id);
-          const reached = playToken > 0 && order >= 0 && reachedIndex(order);
+          const isReached = playToken > 0 && order >= 0 && reached(order);
+          const labelX = s.side === 'l' ? s.x - 16 : s.x + 16;
           return (
             <motion.g
               key={s.id}
-              className={`station${selected ? ' is-selected' : ''}${reached ? ' is-reached' : ''}`}
+              className={`station${selected ? ' is-selected' : ''}${isReached ? ' is-reached' : ''}`}
               role="button"
               tabIndex={0}
               aria-pressed={selected}

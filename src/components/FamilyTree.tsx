@@ -1,0 +1,134 @@
+import { PEOPLE } from '../content/people';
+import type { Tree, UnionKind } from '../content/families';
+
+const BW = 132; // box width
+const BH = 56; // box height
+
+const STYLE: Record<UnionKind, { stroke: string; dash?: string; width: number }> = {
+  marriage: { stroke: 'var(--ink)', width: 2.5 },
+  concubine: { stroke: 'var(--earth)', dash: '6 5', width: 2.5 },
+  bond: { stroke: 'var(--olive)', dash: '3 6', width: 2.5 },
+  conflict: { stroke: 'var(--problem)', dash: '8 4', width: 2.5 },
+};
+
+interface Props {
+  tree: Tree;
+  selected: string;
+  onPick: (id: string) => void;
+}
+
+// Generations as rows. Couples share a line; children hang from a bus under their parents.
+export default function FamilyTree({ tree, selected, onPick }: Props) {
+  const pos = new Map(tree.nodes.map((n) => [n.id, n]));
+  const center = (id: string) => {
+    const n = pos.get(id);
+    return n ? { x: n.x, y: n.y + BH / 2 } : { x: 0, y: 0 };
+  };
+  const name = (id: string) => PEOPLE.find((p) => p.id === id);
+
+  // Spouses on the same row with someone between them go under the row, so no line crosses a box.
+  const unionPath = (a: string, b: string) => {
+    const A = pos.get(a);
+    const B = pos.get(b);
+    if (!A || !B) return null;
+    const ca = center(a);
+    const cb = center(b);
+    const sameRow = A.y === B.y;
+    const between = tree.nodes.some(
+      (n) => n.y === A.y && n.id !== a && n.id !== b && n.x > Math.min(A.x, B.x) && n.x < Math.max(A.x, B.x),
+    );
+    if (sameRow && between) {
+      const y = A.y + BH + 22;
+      return `M${ca.x} ${A.y + BH} V${y} H${cb.x} V${B.y + BH}`;
+    }
+    if (sameRow) return `M${ca.x} ${ca.y} H${cb.x}`;
+    return `M${ca.x} ${ca.y} L${cb.x} ${cb.y}`;
+  };
+
+  const childPaths = tree.parentage.flatMap(({ parents, child }) => {
+    const c = pos.get(child);
+    if (!c) return [];
+    const parentBottoms = parents.map((p) => pos.get(p)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+    if (parentBottoms.length === 0) return [];
+    const topOfChild = c.y;
+    const bottom = Math.max(...parentBottoms.map((p) => p.y + BH));
+    const midY = (bottom + topOfChild) / 2;
+    return parentBottoms.map((p) => `M${p.x} ${p.y + BH} V${midY} H${c.x} V${topOfChild}`);
+  });
+
+  const siblingBus = tree.siblings && tree.siblings.length > 1 ? tree.siblings.map((id) => pos.get(id)).filter(Boolean) : [];
+  const busY = siblingBus.length ? Math.min(...siblingBus.map((n) => n!.y)) - 28 : 0;
+
+  return (
+    <svg viewBox={`0 0 ${tree.w} ${tree.h}`} className="family-tree" role="img" aria-label={tree.he} style={{ direction: 'ltr' }}>
+      {/* Links first, so boxes sit on top. */}
+      {tree.unions.map((u) => {
+        const d = unionPath(u.a, u.b);
+        if (!d) return null;
+        const s = STYLE[u.kind];
+        return (
+          <path
+            key={`${u.a}-${u.b}`}
+            d={d}
+            fill="none"
+            stroke={s.stroke}
+            strokeWidth={s.width}
+            strokeDasharray={s.dash}
+            strokeLinecap="round"
+            className={`link link-${u.kind}`}
+          />
+        );
+      })}
+      {childPaths.map((d, i) => (
+        <path key={i} d={d} fill="none" stroke="var(--ink)" strokeWidth={2} strokeLinecap="round" className="link link-child" />
+      ))}
+      {siblingBus.length > 0 && (
+        <g>
+          <path
+            d={`M${Math.min(...siblingBus.map((n) => n!.x))} ${busY} H${Math.max(...siblingBus.map((n) => n!.x))}`}
+            stroke="var(--ink)"
+            strokeWidth={2}
+            fill="none"
+          />
+          {siblingBus.map((n) => (
+            <path key={n!.x} d={`M${n!.x} ${busY} V${n!.y}`} stroke="var(--ink)" strokeWidth={2} fill="none" />
+          ))}
+          <text x={(Math.min(...siblingBus.map((n) => n!.x)) + Math.max(...siblingBus.map((n) => n!.x))) / 2} y={busY - 8} textAnchor="middle" className="tree-note-label" style={{ direction: 'rtl' }}>
+            אחים
+          </text>
+        </g>
+      )}
+
+      {tree.nodes.map((n) => {
+        const p = name(n.id);
+        if (!p) return null;
+        const on = selected === n.id;
+        return (
+          <g
+            key={n.id}
+            className={`tree-node${on ? ' is-selected' : ''}`}
+            role="button"
+            tabIndex={0}
+            aria-pressed={on}
+            aria-label={`${p.he}, ${p.en}`}
+            onClick={() => onPick(n.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onPick(n.id);
+              }
+            }}
+          >
+            <rect x={n.x - BW / 2} y={n.y} width={BW} height={BH} className="tree-box" />
+            <text x={n.x} y={n.y + 26} textAnchor="middle" className="tree-he" style={{ direction: 'rtl' }}>
+              {p.he}
+            </text>
+            <text x={n.x} y={n.y + 44} textAnchor="middle" className="tree-en">
+              {p.en}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}

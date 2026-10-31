@@ -100,6 +100,7 @@ async function run() {
     ok((await page.locator('.station').count()) === 9, 'abraham route shows nine stations');
     await page.locator('.route-switch button', { hasText: 'מסע היציאה' }).click();
     await page.waitForFunction(() => location.hash.includes('route=exodus'));
+    await page.waitForFunction(() => document.querySelectorAll('.station').length === 8);
     ok((await page.locator('.station').count()) === 8, 'exodus route shows eight stations');
     await page.locator('.station', { hasText: 'ים סוף' }).first().locator('.station-hit').click();
     ok((await page.locator('.map-detail h2').textContent()).includes('ים סוף'), 'station click opens its detail');
@@ -128,12 +129,23 @@ async function run() {
     await page.waitForSelector('.track-dot');
     ok((await page.locator('.track-dot').count()) === 10, 'timeline track shows ten dots');
     await page.goto(`${BASE}#/people`);
-    await page.waitForSelector('.rel-graph');
-    ok((await page.locator('.rel-node').count()) === 4, 'constellation shows Abraham\'s four relations');
+    await page.waitForSelector('.family-tree');
+    ok((await page.locator('.tree-node').count()) === 11, 'family tree shows the eleven people of Genesis');
+    ok((await page.locator('.family-tree .link').count()) >= 8, 'family tree draws marriages and descent lines');
+    await page.locator('.tree-node', { hasText: 'יוסף' }).click();
+    ok((await page.locator('.rel-list h3').first().textContent()).includes('יוסף'), 'clicking a tree node selects that person');
     await page.goto(`${BASE}#/stories/lech-lecha`);
     await page.waitForSelector('.motif');
     ok((await page.locator('.motif circle').count()) >= 5, 'story motif draws its four rings');
     ok((await page.locator('.reading-progress').count()) === 1, 'reading progress bar present');
+    await page.goto(`${BASE}#/`);
+    await page.waitForSelector('.app-mark');
+    ok((await page.locator('.topbar .app-mark').count()) === 1, 'bar shows the app mark');
+    const brandBox = await page.locator('.topbar .brand').boundingBox();
+    const logoBox = await page.locator('ai-menu').boundingBox();
+    ok(brandBox.x > 900, 'brand and nav start on the right side of the bar');
+    ok(logoBox.x < 200, 'logo menu sits on the left side of the bar');
+    ok((await page.locator('.map-base').count()) === 0 , 'base map loads only on the map page');
 
     // Journal: autosave and reload
     await page.goto(`${BASE}#/journal`);
