@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import HowTo from '../components/HowTo';
 import { BOOKS, SECTIONS } from '../content/books';
 import { STORIES } from '../content/stories';
 import { CHAPTER_COUNT } from '../content/chapters';
 import { BookSequence } from '../components/BookRail';
+import Rich from '../components/Rich';
 import { orderStories } from '../content/order';
 
 // Three levels on one page: the Bible (the sequence), a book (a row), and its stories (rows under it).
@@ -15,9 +17,11 @@ export default function BooksPage() {
     <div className="books-page">
       <header className="page-head">
         <p className="eyebrow">תנ"ך · ספרים · סיפורים</p>
-        <h1>התנ"ך בעשרים וארבעה ספרים.</h1>
-        <p className="lead">{built} ספרים פעילים. בחרו ספר כדי לראות את סיפוריו בתוכו.</p>
+        <h1>התנ"ך ב-24 ספרים.</h1>
+        <p className="lead">{built} ספרים פעילים מתוך 24. בחרו ספר כדי לראות את סיפוריו בתוכו.</p>
       </header>
+
+      <HowTo>לחצו על ספר כדי לפתוח את סיפוריו במקומו. סדר הספרים מעל מציג איפה הספר נמצא בתוך התנ"ך כולו.</HowTo>
 
       <section className="stage-band" aria-label="סדר הספרים">
         <BookSequence />
@@ -42,7 +46,6 @@ export default function BooksPage() {
                   >
                     <span className="row-num">{n}</span>
                     <span className="row-title">{b.he}</span>
-                    <span className="row-ref">{b.en}</span>
                     <span className="row-ref">{CHAPTER_COUNT[b.id]} פרקים</span>
                     <span className="row-ref">{stories.length > 0 ? `${stories.length} סיפורים` : `ממתין לשלב ${b.stage}`}</span>
                   </button>
@@ -55,7 +58,7 @@ export default function BooksPage() {
                             <span className="row-era">{s.era}</span>
                             <span className="row-ref">{s.ref}</span>
                             <span className="row-title">{s.title}</span>
-                            <span className="row-insight">{s.insight}</span>
+                            <span className="row-insight"><Rich text={`==${s.insight}==`} /></span>
                           </a>
                         </li>
                       ))}

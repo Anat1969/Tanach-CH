@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Rich from '../components/Rich';
 import Stage from '../components/Stage';
+import HowTo from '../components/HowTo';
 import { ROUTES } from '../content/route';
 import { STORIES } from '../content/stories';
 import { setRoute } from '../lib/hash';
@@ -27,6 +28,8 @@ export default function MapPage({ routeId }: Props) {
           <Rich text={`**${route.stops.length}** תחנות במסלול **${route.he}**. הנקודות ממוספרות לפי הסדר במסע.`} />
         </p>
       </header>
+
+      <HowTo>גלגלת העכבר מקרבת ומרחיקה את המפה. גרירה מזיזה אותה. לחיצה כפולה מחזירה לתצוגה המקורית. לחצו על תחנה ברשימה כדי לקרוא עליה.</HowTo>
 
       <div className="route-switch" role="group" aria-label="בחירת מסלול">
         {ROUTES.map((r) => (
@@ -55,7 +58,6 @@ export default function MapPage({ routeId }: Props) {
               <button type="button" className={`stop-row${stop?.id === st.id ? ' is-focus' : ''}`} onClick={() => setStopId(st.id)} aria-pressed={stop?.id === st.id}>
                 <span className="row-num">{i + 1}</span>
                 <span className="row-title">{st.he}</span>
-                <span className="row-ref">{st.en}</span>
                 <span className="row-ref">{st.ref}</span>
               </button>
               {stop?.id === st.id && (

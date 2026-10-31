@@ -7,9 +7,9 @@ const BH = 56; // box height
 
 const STYLE: Record<UnionKind, { stroke: string; dash?: string; width: number }> = {
   marriage: { stroke: 'var(--ink)', width: 2.5 },
-  concubine: { stroke: 'var(--earth)', dash: '6 5', width: 2.5 },
-  bond: { stroke: 'var(--olive)', dash: '3 6', width: 2.5 },
-  conflict: { stroke: 'var(--problem)', dash: '8 4', width: 2.5 },
+  concubine: { stroke: '#c0803f', dash: '6 5', width: 2.5 },
+  bond: { stroke: '#6f9a6b', dash: '3 6', width: 2.5 },
+  conflict: { stroke: '#b5655a', dash: '8 4', width: 2.5 },
 };
 
 interface Props {
@@ -31,6 +31,13 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
     return n ? { x: n.x, y: n.y + BH / 2 } : { x: 0, y: 0 };
   };
   const name = (id: string) => PEOPLE.find((p) => p.id === id);
+  // Who the person is a child of, written in words under the name.
+  const childOf = (id: string): string => {
+    const parents = tree.parentage.filter((p) => p.child === id).flatMap((p) => p.parents);
+    if (parents.length === 0) return '';
+    const names = parents.map((pid) => PEOPLE.find((x) => x.id === pid)?.he ?? pid);
+    return `בן ל${names.join(' ו')}`;
+  };
 
   // Spouses on the same row with someone between them go under the row, so no line crosses a box.
   const unionPath = (a: string, b: string) => {
@@ -151,8 +158,10 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
             <text x={n.x} y={n.y + 26} textAnchor="middle" className="tree-he" style={{ direction: 'rtl' }}>
               {p.he}
             </text>
+            <text x={n.x} y={n.y + 44} textAnchor="middle" className="tree-en" style={{ direction: 'rtl' }}>
+              {childOf(n.id)}
+            </text>
             <text x={n.x} y={n.y + 44} textAnchor="middle" className="tree-en">
-              {p.en}
             </text>
           </g>
         );

@@ -7,7 +7,7 @@ import { STORIES } from '../content/stories';
 import { setRoute } from '../lib/hash';
 
 const CARDS: { href: string; title: string; text: string; count: string }[] = [
-  { href: '#/books', title: 'ספרים', text: 'עשרים וארבעה ספרים בשלבים. כרגע פעילים בראשית, שמות ומלכים.', count: '24 ספרים' },
+  { href: '#/books', title: 'ספרים', text: '24 ספרים בשלבים. כרגע פעילים בראשית, שמות ומלכים.', count: '24 ספרים' },
   { href: '#/stories', title: 'סיפורים', text: 'סיפורים לפי ארבעה מושגי פרשנות, עם מקור לכל קריאה.', count: `${STORIES.length} סיפורים` },
   { href: '#/map', title: 'מפה', text: 'שני מסעות על מפה סכמטית: מסע האבות ומסע היציאה.', count: '2 מסעות' },
   { href: '#/time', title: 'ציר זמן', text: 'סדר המאורעות במקרא, עם תאריכים רק במקום שיש בו הסכמה.', count: '10 אירועים' },
@@ -31,7 +31,7 @@ export default function HomePage() {
           <p className="eyebrow">מפה · ציר זמן · יחסים · סיפור</p>
           <h1>התנ"ך נקרא כל שנה בקריאה אחרת.</h1>
           <p className="lead">
-            <Rich text="**ארבעה** מושגי פרשנות: **פשט, רמז, דרש, סוד**. לכל סיפור ארבע קריאות, וכל אחת מוגדרת ומקורה." />
+            <Rich text="**4** מושגי פרשנות: **פשט, רמז, דרש, סוד**. לכל סיפור ארבע קריאות, וכל אחת מוגדרת ומקורה." />
           </p>
           <p className="lead-line">
             <Rich text="==הטקסט נשאר, הקריאה משתנה.==" />
@@ -69,7 +69,7 @@ export default function HomePage() {
           </div>
           <div className="card tone-solution">
             <p className="eyebrow">פתרון</p>
-            <h3>כל סיפור נקרא בארבעה מושגים.</h3>
+            <h3>כל סיפור נקרא ב-4 מושגים.</h3>
             <p>
               <Rich text="**כל מושג** נושא מקור, סוג קריאה וכלל ברור." />
             </p>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { animate, motion, MotionConfig } from 'framer-motion';
 import { ROUTES, CLOSE_VIEW, type RouteDef } from '../content/route';
 import MapBase from './MapBase';
+import { usePanZoom } from '../lib/panzoom';
 import { GEO_VIEW } from '../content/geo-data';
 
 export const MAP_VIEW = GEO_VIEW;
@@ -21,6 +22,7 @@ interface Props {
 
 export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [], zoom = 'wide' }: Props) {
   const view = zoom === 'close' ? CLOSE_VIEW : MAP_VIEW;
+  const pz = usePanZoom(view);
   // The close-up is zoomed in, so labels and markers scale down to keep their proportion.
   const k = zoom === 'close' ? 0.5 : 1;
   const byId = new Map(route.stops.map((s) => [s.id, s]));
@@ -54,7 +56,19 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
 
   return (
     <MotionConfig reducedMotion="user">
-      <svg viewBox={view} className="map-svg" role="img" aria-labelledby="map-title" style={{ direction: 'ltr' }}>
+      <svg
+        ref={pz.ref}
+        viewBox={pz.viewBox}
+        className="map-svg"
+        role="img"
+        aria-labelledby="map-title"
+        style={{ direction: 'ltr', touchAction: 'none', cursor: 'grab' }}
+        onPointerDown={pz.onPointerDown}
+        onPointerMove={pz.onPointerMove}
+        onPointerUp={pz.onPointerUp}
+        onPointerCancel={pz.onPointerUp}
+        onDoubleClick={pz.reset}
+      >
         <title id="map-title">{`מפה סכמטית: ${route.he}`}</title>
         <MapBase />
 
@@ -122,7 +136,6 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
                 {`${route.stops.indexOf(s) + 1}. ${s.he}`}
               </text>
               <text x={labelX} y={s.y + 19 * k + 4} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-en" style={{ direction: 'ltr', fontSize: 11 * k }}>
-                {s.en}
               </text>
             </motion.g>
           );

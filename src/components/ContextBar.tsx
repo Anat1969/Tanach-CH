@@ -2,19 +2,20 @@ import { useRoute } from '../lib/hash';
 import { BOOKS } from '../content/books';
 import { STORIES } from '../content/stories';
 import { ROUTES } from '../content/route';
+import { BookSequence } from './BookRail';
 
-// The sticky path of what is open now: תנ"ך › חלק › ספר › סיפור. It stays visible while scrolling.
+// The sticky path of what is open now, with the whole Bible under it: the current book is lit.
 export default function ContextBar() {
   const { parts, params } = useRoute();
   const section = parts[0] ?? '';
+  const story = section === 'stories' && parts[1] ? STORIES.find((s) => s.id === parts[1]) : undefined;
+  const bookId = story?.book ?? (section === 'stories' ? params.get('book') : null) ?? null;
+  const book = BOOKS.find((b) => b.id === bookId);
   const crumbs: { label: string; href?: string }[] = [{ label: 'תנ"ך', href: '#/books' }];
 
   if (section === 'books') {
     crumbs.push({ label: 'ספרים' });
   } else if (section === 'stories') {
-    const story = parts[1] ? STORIES.find((s) => s.id === parts[1]) : undefined;
-    const bookId = story?.book ?? params.get('book');
-    const book = BOOKS.find((b) => b.id === bookId);
     crumbs.push({ label: 'סיפורים', href: book ? `#/stories?book=${book.id}` : '#/stories' });
     if (book) crumbs.push({ label: book.he, href: `#/stories?book=${book.id}` });
     if (story) crumbs.push({ label: story.title });
@@ -39,6 +40,9 @@ export default function ContextBar() {
           </span>
         ))}
       </nav>
+      <div className="global-rail">
+        <BookSequence compact current={book?.id} />
+      </div>
     </div>
   );
 }

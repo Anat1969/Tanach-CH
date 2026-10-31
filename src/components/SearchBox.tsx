@@ -22,13 +22,13 @@ export function SearchBox() {
     STORIES.forEach((s) =>
       hits.push({ key: `s-${s.id}`, label: s.title, sub: `סיפור · ${s.ref}`, go: () => (window.location.hash = `#/stories/${s.id}`) }),
     );
-    PEOPLE.forEach((p) => hits.push({ key: `p-${p.id}`, label: p.he, sub: `דמות · ${p.en}`, go: () => setRoute(['people']) }));
+    PEOPLE.forEach((p) => hits.push({ key: `p-${p.id}`, label: p.he, sub: 'דמות', go: () => setRoute(['people']) }));
     ROUTES.forEach((r) =>
       r.stops.forEach((st) =>
-        hits.push({ key: `t-${r.id}-${st.id}`, label: st.he, sub: `תחנה · ${r.he} · ${st.en}`, go: () => setRoute(['map'], { route: r.id }) }),
+        hits.push({ key: `t-${r.id}-${st.id}`, label: st.he, sub: `תחנה · ${r.he}`, go: () => setRoute(['map'], { route: r.id }) }),
       ),
     );
-    BOOKS.forEach((b) => hits.push({ key: `b-${b.id}`, label: b.he, sub: `ספר · ${b.en}`, go: () => setRoute(['stories'], { book: b.id }) }));
+    BOOKS.forEach((b) => hits.push({ key: `b-${b.id}`, label: b.he, sub: 'ספר', go: () => setRoute(['stories'], { book: b.id }) }));
     return hits;
   }, []);
 

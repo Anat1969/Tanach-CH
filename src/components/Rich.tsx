@@ -1,4 +1,20 @@
 import { Fragment, type ReactNode } from 'react';
+import { PEOPLE } from '../content/people';
+import { ROUTES } from '../content/route';
+
+// Names of people and places are bold wherever they appear in the text (the house rule for names).
+const NAMES = Array.from(
+  new Set([...PEOPLE.map((p) => p.he), ...ROUTES.flatMap((r) => r.stops.map((s) => s.he))]),
+).sort((a, b) => b.length - a.length);
+const NAME_RE = new RegExp(`(${NAMES.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g');
+
+function boldNames(text: string): string {
+  // Leave existing **bold** and ==marker== segments alone; mark names in the rest.
+  return text
+    .split(/(\*\*[^*]+\*\*|==[^=]+==)/g)
+    .map((part) => (part.startsWith('**') || part.startsWith('==') ? part : part.replace(NAME_RE, '**$1**')))
+    .join('');
+}
 
 // Numbers are isolated left-to-right inside Hebrew text, so they never reorder.
 function withNumbers(s: string): ReactNode[] {
@@ -15,7 +31,7 @@ function withNumbers(s: string): ReactNode[] {
 
 // **bold** marks a key term. ==text== marks the one insight of a block, shown as a yellow marker.
 export default function Rich({ text, className }: { text: string; className?: string }) {
-  const parts = text.split(/(\*\*[^*]+\*\*|==[^=]+==)/g);
+  const parts = boldNames(text).split(/(\*\*[^*]+\*\*|==[^=]+==)/g);
   return (
     <span className={className}>
       {parts.map((p, i) => {

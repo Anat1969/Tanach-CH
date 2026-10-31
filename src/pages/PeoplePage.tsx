@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Rich from '../components/Rich';
 import Stage from '../components/Stage';
+import HowTo from '../components/HowTo';
 import { KIND_LABEL, PEOPLE, RELATIONS, type RelationKind } from '../content/people';
 import { STORIES } from '../content/stories';
 
@@ -35,6 +36,8 @@ export default function PeoplePage() {
         </p>
       </header>
 
+      <HowTo>בחרו סוג קשר. העץ מוצג בגרירה ובגלגלת העכבר. כל קו הוא קשר, והסוג שלו מסומן במקרא. לחיצה על דמות בעץ מציגה את הקשרים שלה.</HowTo>
+
       <div className="route-switch" role="group" aria-label="סוג מערכת היחסים">
         <button type="button" className={`chip press${kind === null ? ' is-active' : ''}`} aria-pressed={kind === null} onClick={() => setKind(null)}>
           כל הקשרים
@@ -55,7 +58,7 @@ export default function PeoplePage() {
         <div className="chip-cloud" role="group" aria-label="בחירת דמות">
           {PEOPLE.map((p) => (
             <button key={p.id} type="button" className={`chip press${p.id === selected ? ' is-active' : ''}`} aria-pressed={p.id === selected} onClick={() => setSelected(p.id)}>
-              {p.he} <span className="en">({p.en})</span>
+              {p.he}
             </button>
           ))}
         </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Rich from '../components/Rich';
 import Stage from '../components/Stage';
+import HowTo from '../components/HowTo';
 import { TIMELINE, ERA_COLOR, type Era } from '../content/timeline';
 import { STORIES } from '../content/stories';
 
@@ -18,9 +19,11 @@ export default function TimePage() {
         <p className="eyebrow">ציר זמן · שנים</p>
         <h1>המאורעות על ציר אחד.</h1>
         <p className="lead">
-          <Rich text="**עשרה** אירועים מרכזיים על ציר של **שנים**. כל אירוע מסומן כ**מוסכם** בחקר, או כ**הערכה**." />
+          <Rich text="**10** אירועים מרכזיים על ציר של **שנים**. כל אירוע מסומן כ**מוסכם** בחקר, או כ**הערכה**." />
         </p>
       </header>
+
+      <HowTo>גלגלת העכבר מקרבת ומרחיקה את ציר השנים, וגרירה מזיזה אותו. לחיצה כפולה מחזירה לתצוגה המקורית. בחרו תקופה כדי לצמצם את הסיפורים.</HowTo>
 
       <div className="route-switch" role="group" aria-label="בחירת תקופה">
         <button type="button" className={`chip press${era === null ? ' is-active' : ''}`} aria-pressed={era === null} onClick={() => { setEra(null); setFocusId(STORIES[0].id); }}>
