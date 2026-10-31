@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import RouteMap from '../components/RouteMap';
 import Rich from '../components/Rich';
 import { ROUTES } from '../content/route';
@@ -12,6 +13,7 @@ interface Props {
 export default function MapPage({ routeId }: Props) {
   const route = ROUTES.find((r) => r.id === routeId) ?? ROUTES[0];
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [playToken, setPlayToken] = useState(0);
   const stop = route.stops.find((s) => s.id === selectedId) ?? null;
 
   const choose = (id: string) => {
@@ -46,7 +48,13 @@ export default function MapPage({ routeId }: Props) {
 
       <div className="map-layout">
         <div className="map-frame">
-          <RouteMap route={route} selectedId={selectedId} onSelect={setSelectedId} />
+          <RouteMap route={route} selectedId={selectedId} onSelect={setSelectedId} playToken={playToken} />
+          <div className="journey-bar">
+            <button type="button" className="chip press" onClick={() => setPlayToken((n) => n + 1)}>
+              {playToken === 0 ? 'הפעל מסע' : 'הפעל שוב'}
+            </button>
+            <span className="muted">המסע לוקח כ-12 שניות. התחנות נדלקות כשהנקודה מגיעה אליהן.</span>
+          </div>
           <div className="legend" aria-label="מקרא">
             <span className="legend-item">
               <span className="dot dot-filled" style={{ background: route.color }} /> תחנה על המסלול
@@ -60,7 +68,7 @@ export default function MapPage({ routeId }: Props) {
           </div>
         </div>
 
-        <aside className="panel map-detail">
+        <motion.aside key={stop?.id ?? 'none'} className="panel map-detail" initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
           {stop ? (
             <>
               <p className="eyebrow">{stop.ref}</p>
@@ -103,7 +111,7 @@ export default function MapPage({ routeId }: Props) {
               </ol>
             </>
           )}
-        </aside>
+        </motion.aside>
       </div>
       <p className="source-line">מיקומים סכמטיים, לא בקנה מידה. הזיהוי של כל תחנה לפי המקרא ולפי מחקר ארכיאולוגי.</p>
     </div>

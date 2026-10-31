@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { LEVELS, type Level } from '../types';
 
 // Exploded axonometric of one building: four floors floating above each other.
@@ -26,8 +27,13 @@ export default function IsoStack({ active, onSelect }: Props) {
           const [c0, c1, c2] = SHADE[lv.id];
           const select = () => onSelect(lv.id);
           return (
-            <g
+            <motion.g
               key={lv.id}
+              initial={{ opacity: 0, y: -28 }}
+              animate={active === lv.id ? { opacity: 1, y: [0, -4, 0] } : { opacity: 1, y: 0 }}
+              transition={active === lv.id ? { y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut' }, opacity: { duration: 0.3 } } : { delay: i * 0.12, duration: 0.4 }}
+            >
+            <g
               className={`floor${active === lv.id ? ' is-active' : ''}`}
               role="button"
               tabIndex={0}
@@ -45,6 +51,7 @@ export default function IsoStack({ active, onSelect }: Props) {
               <polygon points={right} fill={c2} />
               <polygon points={top} fill={c0} />
             </g>
+            </motion.g>
           );
         })}
       </svg>

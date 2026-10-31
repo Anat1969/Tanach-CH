@@ -757,3 +757,124 @@ mark.insight {
     padding: var(--s3);
   }
 }
+
+/* Motion layer: progress bar, motif, journey, timeline track, relation constellation. */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--earth), var(--olive), var(--night), var(--plum));
+  transform-origin: 100% 50%;
+  z-index: 60;
+}
+.motif {
+  display: block;
+  overflow: visible;
+}
+.motif-core {
+  fill: var(--ink);
+}
+.story-motif {
+  margin-top: var(--s3);
+}
+.route-guide {
+  fill: none;
+  stroke: none;
+  pointer-events: none;
+}
+.traveler {
+  fill: var(--insight);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.traveler-halo {
+  fill: rgba(255, 224, 102, 0.35);
+}
+.station.is-reached circle:nth-of-type(2) {
+  stroke: var(--insight);
+  stroke-width: 4;
+}
+.journey-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s3);
+  font-size: 14px;
+}
+.time-track {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: var(--s3);
+  margin-bottom: var(--s4);
+}
+.time-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.track-line {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.track-dot {
+  cursor: pointer;
+  outline: none;
+}
+.track-dot:hover circle:nth-of-type(2) {
+  stroke-width: 4;
+}
+.track-dot:focus-visible circle:nth-of-type(2) {
+  stroke: var(--insight);
+  stroke-width: 5;
+}
+.track-label {
+  font-family: var(--sans);
+  font-size: 15px;
+  fill: var(--muted);
+}
+.rel-panel {
+  display: grid;
+  gap: var(--s3);
+}
+.rel-graph {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.rel-node {
+  cursor: pointer;
+  outline: none;
+}
+.rel-node-circle {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.rel-node:hover .rel-node-circle {
+  fill: var(--insight);
+}
+.rel-node-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  fill: var(--ink);
+  pointer-events: none;
+}
+.rel-center {
+  fill: var(--ink);
+}
+.rel-center-text {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--paper);
+}
+.rel-legend {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--muted);
+}
