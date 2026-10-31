@@ -1,10 +1,12 @@
 import type { Story } from '../types';
+import { STAGE_ONE_STORIES } from './stories-stage-one';
 
 // Every verse is quoted from the text (unvocalized, ketiv). Every reading below names its kind:
 // text (טקסט), hint (רמז), midrash (מדרש), traditional commentary (פרשנות) or kabbalah (קבלה).
-export const STORIES: Story[] = [
+const BASE_STORIES: Story[] = [
   {
     id: 'lech-lecha',
+    book: 'bereshit',
     title: 'לך לך: היציאה הראשונה',
     ref: 'בראשית יב, א-ט',
     insight: 'היציאה הראשונה מתחילה בקריאה, לא בידע.',
@@ -44,6 +46,7 @@ export const STORIES: Story[] = [
   },
   {
     id: 'akedah',
+    book: 'bereshit',
     title: 'העקידה: מבחן האהבה',
     ref: 'בראשית כב, א-יט',
     insight: 'מבחן שנועד לשאול על אהבה, לא על קורבן.',
@@ -83,6 +86,7 @@ export const STORIES: Story[] = [
   },
   {
     id: 'yosef',
+    book: 'bereshit',
     title: 'יוסף והכתונת: אהבה שיוצרת מרחק',
     ref: 'בראשית לז, ג-ד',
     insight: 'אהבה גלויה יוצרת מרחק בין האחים.',
@@ -122,6 +126,7 @@ export const STORIES: Story[] = [
   },
   {
     id: 'seneh',
+    book: 'shemot',
     title: 'הסנה: השם שאינו נעצר',
     ref: 'שמות ג, א-יד',
     insight: 'השם נקרא בפועל, לא בתואר.',
@@ -161,6 +166,7 @@ export const STORIES: Story[] = [
   },
   {
     id: 'yetziat',
+    book: 'shemot',
     title: 'בקיעת הים: המעבר בלילה',
     ref: 'שמות יד, כא-כב',
     insight: 'המעבר מתרחש בלילה, לא ביום.',
@@ -200,6 +206,7 @@ export const STORIES: Story[] = [
   },
   {
     id: 'eliyahu',
+    book: 'melachim',
     title: 'קול דממה דקה: הנביא בחורב',
     ref: 'מלכים א יט, ח-יג',
     insight: 'הנוכחות נשמעת בשקט, לא בסערה.',
@@ -238,3 +245,5 @@ export const STORIES: Story[] = [
     haikuNote: 'ההקשבה היא שמקבלת את ההתגלות.',
   },
 ];
+
+export const STORIES: Story[] = [...BASE_STORIES, ...STAGE_ONE_STORIES];

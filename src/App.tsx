@@ -8,6 +8,7 @@ import MapPage from './pages/MapPage';
 import TimePage from './pages/TimePage';
 import PeoplePage from './pages/PeoplePage';
 import JournalPage from './pages/JournalPage';
+import BooksPage from './pages/BooksPage';
 
 export default function App() {
   const { parts, params } = useRoute();
@@ -20,7 +21,10 @@ export default function App() {
   let page;
   switch (section) {
     case 'stories':
-      page = parts[1] ? <StoryPage id={parts[1]} level={params.get('level')} /> : <StoriesPage />;
+      page = parts[1] ? <StoryPage id={parts[1]} level={params.get('level')} /> : <StoriesPage book={params.get('book')} />;
+      break;
+    case 'books':
+      page = <BooksPage />;
       break;
     case 'map':
       page = <MapPage routeId={params.get('route')} />;
