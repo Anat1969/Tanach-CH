@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate, motion, MotionConfig } from 'framer-motion';
-import { ROUTES, type RouteDef } from '../content/route';
+import { ROUTES, CLOSE_VIEW, type RouteDef } from '../content/route';
 import MapBase from './MapBase';
+import { GEO_VIEW } from '../content/geo-data';
 
-export const MAP_VIEW = '0 0 640 780';
+export const MAP_VIEW = GEO_VIEW;
 const JOURNEY_SECONDS = 12;
 
 interface Props {
@@ -14,9 +15,14 @@ interface Props {
   playToken: number;
   // Stops linked to the stories in focus. They get a ring, the rest recede.
   highlightStopIds?: string[];
+  // 'wide' shows the whole region, 'close' the land of Israel.
+  zoom?: 'wide' | 'close';
 }
 
-export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [] }: Props) {
+export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [], zoom = 'wide' }: Props) {
+  const view = zoom === 'close' ? CLOSE_VIEW : MAP_VIEW;
+  // The close-up is zoomed in, so labels and markers scale down to keep their proportion.
+  const k = zoom === 'close' ? 0.5 : 1;
   const byId = new Map(route.stops.map((s) => [s.id, s]));
   const ordered = route.path.map((id) => byId.get(id)).filter((s): s is NonNullable<typeof s> => Boolean(s));
   const d = `M${ordered.map((s) => `${s.x},${s.y}`).join(' L')}`;
@@ -48,7 +54,7 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
 
   return (
     <MotionConfig reducedMotion="user">
-      <svg viewBox={MAP_VIEW} className="map-svg" role="img" aria-labelledby="map-title" style={{ direction: 'ltr' }}>
+      <svg viewBox={view} className="map-svg" role="img" aria-labelledby="map-title" style={{ direction: 'ltr' }}>
         <title id="map-title">{`מפה סכמטית: ${route.he}`}</title>
         <MapBase />
 
@@ -102,20 +108,20 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 + Math.max(order, 0) * 0.12, duration: 0.3 }}
             >
-              {highlightStopIds.includes(s.id) && <circle cx={s.x} cy={s.y} r={20} className="station-focus" />}
-              <circle cx={s.x} cy={s.y} r={22} className="station-hit" />
+              {highlightStopIds.includes(s.id) && <circle cx={s.x} cy={s.y} r={20 * k} className="station-focus" />}
+              <circle cx={s.x} cy={s.y} r={22 * k} className="station-hit" />
               <circle
                 cx={s.x}
                 cy={s.y}
-                r={selected ? 12 : 8}
+                r={(selected ? 12 : 8) * k}
                 fill={s.onPath ? route.color : 'var(--paper)'}
                 stroke="var(--ink)"
                 strokeWidth={2}
               />
-              <text x={labelX} y={s.y + 4} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-he" style={{ direction: 'ltr' }}>
+              <text x={labelX} y={s.y + 4} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-he" style={{ direction: 'ltr', fontSize: 16 * k * 0.8, strokeWidth: 4 * k }}>
                 {s.he}
               </text>
-              <text x={labelX} y={s.y + 19} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-en" style={{ direction: 'ltr' }}>
+              <text x={labelX} y={s.y + 19 * k + 4} textAnchor={s.side === 'l' ? 'end' : 'start'} className="st-en" style={{ direction: 'ltr', fontSize: 11 * k }}>
                 {s.en}
               </text>
             </motion.g>

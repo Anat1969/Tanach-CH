@@ -8,7 +8,7 @@ import { setRoute } from '../lib/hash';
 
 const CARDS: { href: string; title: string; text: string; count: string }[] = [
   { href: '#/books', title: 'ספרים', text: 'עשרים וארבעה ספרים בשלבים. כרגע פעילים בראשית, שמות ומלכים.', count: '24 ספרים' },
-  { href: '#/stories', title: 'סיפורים', text: 'סיפורים בארבע קומות פרשנות, עם מקור לכל קומה.', count: `${STORIES.length} סיפורים` },
+  { href: '#/stories', title: 'סיפורים', text: 'סיפורים לפי ארבעה מושגי פרשנות, עם מקור לכל קריאה.', count: `${STORIES.length} סיפורים` },
   { href: '#/map', title: 'מפה', text: 'שני מסעות על מפה סכמטית: מסע האבות ומסע היציאה.', count: '2 מסעות' },
   { href: '#/time', title: 'ציר זמן', text: 'סדר המאורעות במקרא, עם תאריכים רק במקום שיש בו הסכמה.', count: '10 אירועים' },
   { href: '#/people', title: 'יחסים', text: 'דמויות וקשריהן, וכל קשר עם הפסוק שמעיד עליו.', count: '21 דמויות' },
@@ -29,12 +29,12 @@ export default function HomePage() {
           transition={{ duration: 0.5 }}
         >
           <p className="eyebrow">מפה · ציר זמן · יחסים · סיפור</p>
-          <h1>התנ"ך נקרא כל שנה בקומה אחרת.</h1>
+          <h1>התנ"ך נקרא כל שנה בקריאה אחרת.</h1>
           <p className="lead">
-            <Rich text="**ארבע** קומות פרשנות: **פשט, רמז, דרש, סוד**. כל סיפור הוא בית שעולים בו קומה אחר קומה." />
+            <Rich text="**ארבעה** מושגי פרשנות: **פשט, רמז, דרש, סוד**. לכל סיפור ארבע קריאות, וכל אחת מוגדרת ומקורה." />
           </p>
           <p className="lead-line">
-            <Rich text="==הטקסט נשאר, הקומה משתנה.==" />
+            <Rich text="==הטקסט נשאר, הקריאה משתנה.==" />
           </p>
         </motion.div>
 
@@ -51,7 +51,7 @@ export default function HomePage() {
               className="chip press"
               onClick={() => setRoute(['stories', 'lech-lecha'], { level })}
             >
-              פתיחת "לך לך" בקומה הזו
+              פתיחת "לך לך" במושג הזה
             </button>
           </div>
         </div>
@@ -69,15 +69,15 @@ export default function HomePage() {
           </div>
           <div className="card tone-solution">
             <p className="eyebrow">פתרון</p>
-            <h3>כל סיפור מוצג בארבע קומות.</h3>
+            <h3>כל סיפור נקרא בארבעה מושגים.</h3>
             <p>
-              <Rich text="**כל קומה** נושאת מקור, סוג קריאה וכלל ברור." />
+              <Rich text="**כל מושג** נושא מקור, סוג קריאה וכלל ברור." />
             </p>
           </div>
           <div className="card tone-insight">
             <p className="eyebrow">תובנה</p>
             <h3>
-              <Rich text="==הקומה הרביעית נבנית על הראשונה, לא מחליפה אותה.==" />
+              <Rich text="==הקריאה הרביעית נבנית על הראשונה, לא מחליפה אותה.==" />
             </h3>
             <p>
               <Rich text="כמו **בניין** באשדוד: אותו מבנה, ומרפסת אחרת נותנת נוף אחר." />

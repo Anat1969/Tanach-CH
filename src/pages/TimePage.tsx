@@ -17,7 +17,7 @@ export default function TimePage() {
         <p className="eyebrow">סדר מקראי · לא בקנה מידה</p>
         <h1>המאורעות מסתדרים בסדר אחד.</h1>
         <p className="lead">
-          <Rich text="**עשרה** אירועים מרכזיים, לפי הסדר שבו הם מופיעים במקרא. תאריך מופיע רק כשיש **הסכמה** בחקר." />
+          <Rich text="**עשרה** אירועים מרכזיים על ציר של **שנים**. כל אירוע מסומן כ**מוסכם** בחקר, או כ**הערכה**." />
         </p>
       </header>
 
@@ -61,7 +61,7 @@ export default function TimePage() {
               <span className="era" style={{ background: ERA_COLOR[ev.era] }}>
                 {ev.era}
               </span>
-              {ev.date && <span className="date">{ev.date}</span>}
+              <span className="date">{ev.when}</span>
             </p>
             <h2>{ev.title}</h2>
             <p>{ev.note}</p>

@@ -4,7 +4,7 @@ import { LEVELS } from '../types';
 // The four floors drawn as four rings that open in sequence: pshat is the innermost, sod the outermost.
 export default function Motif({ size = 120 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 200 200" width={size} height={size} className="motif" role="img" aria-label="ארבע קומות פרשנות">
+    <svg viewBox="0 0 200 200" width={size} height={size} className="motif" role="img" aria-label="ארבעה מושגי פרשנות">
       {LEVELS.map((lv, i) => (
         <motion.circle
           key={lv.id}

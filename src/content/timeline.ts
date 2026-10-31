@@ -11,6 +11,9 @@ export const ERA_COLOR: Record<Era, string> = {
 
 export interface TimelineEvent {
   id: string;
+  // Astronomical year: negative is before the common era. Approximate by design, see `when`.
+  year: number;
+  when: string;
   era: Era;
   title: string;
   ref: string;
@@ -23,6 +26,8 @@ export interface TimelineEvent {
 export const TIMELINE: TimelineEvent[] = [
   {
     id: 'avram-yetzia',
+    year: -1900,
+    when: 'כ-1900 לפנה"ס (הערכה מקובלת; התארוך נדון)',
     era: 'אבות',
     title: 'אברם יוצא מחרן',
     ref: 'בראשית יב, א-ד',
@@ -31,6 +36,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'yosef-mitzraymah',
+    year: -1700,
+    when: 'כ-1700 לפנה"ס (הערכה מקובלת)',
     era: 'אבות',
     title: 'יוסף נמכר ומגיע למצרים',
     ref: 'בראשית לז, כח; לט, א',
@@ -39,6 +46,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'yetziat',
+    year: -1250,
+    when: 'כ-1250 לפנה"ס (הערכה; הזמן נדון בחקר)',
     era: 'יציאה',
     title: 'יציאת מצרים',
     ref: 'שמות יב, לז-מא; יד, כא',
@@ -47,6 +56,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'matan-torah',
+    year: -1250,
+    when: 'כ-1250 לפנה"ס (הערכה; הזמן נדון בחקר)',
     era: 'יציאה',
     title: 'מעמד הר סיני',
     ref: 'שמות יט-כ',
@@ -55,6 +66,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'yehoshua',
+    year: -1200,
+    when: 'כ-1200 לפנה"ס (הערכה; הזמן נדון בחקר)',
     era: 'מלוכה',
     title: 'יהושע מוביל את העם מעבר לירדן',
     ref: 'יהושע א, א-ב',
@@ -62,6 +75,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'david',
+    year: -1000,
+    when: 'כ-1000 לפנה"ס (הערכה מקובלת)',
     era: 'מלוכה',
     title: 'דוד מלך על ישראל',
     ref: 'שמואל ב ה, ד-ה',
@@ -69,6 +84,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'mikdash',
+    year: -960,
+    when: 'כ-960 לפנה"ס (הערכה מקובלת)',
     era: 'מלוכה',
     title: 'שלמה בונה את בית המקדש',
     ref: 'מלכים א ו, א',
@@ -76,6 +93,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'churban-1',
+    year: -586,
+    when: '586 לפנה"ס (מוסכם בחקר)',
     era: 'חורבן',
     title: 'חורבן הבית הראשון',
     ref: 'מלכים ב כה, ח-ט',
@@ -84,6 +103,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'shivat-tzion',
+    year: -538,
+    when: '538 לפנה"ס (מוסכם בחקר)',
     era: 'שיבה',
     title: 'שיבת ציון וצו כורש',
     ref: 'עזרא א, א-ד',
@@ -92,6 +113,8 @@ export const TIMELINE: TimelineEvent[] = [
   },
   {
     id: 'churban-2',
+    year: 70,
+    when: '70 לספירה (מוסכם בחקר)',
     era: 'חורבן',
     title: 'חורבן הבית השני',
     ref: 'מקור חיצוני: יוסף בן מתתיהו, מלחמת היהודים',
@@ -99,3 +122,13 @@ export const TIMELINE: TimelineEvent[] = [
     date: '70 לספירה (תאריך מוסכם בחקר)',
   },
 ];
+
+// Conventional era spans on the year scale (not dates of events).
+export const ERA_SPAN: Record<Era, [number, number]> = {
+  ראשית: [-2000, -2000],
+  אבות: [-2000, -1550],
+  יציאה: [-1550, -1200],
+  מלוכה: [-1200, -586],
+  חורבן: [-586, -538],
+  שיבה: [-538, 0],
+};

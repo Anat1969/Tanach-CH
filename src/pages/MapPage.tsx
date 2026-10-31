@@ -15,6 +15,7 @@ export default function MapPage({ routeId }: Props) {
   const route = ROUTES.find((r) => r.id === routeId) ?? ROUTES[0];
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [playToken, setPlayToken] = useState(0);
+  const [zoom, setZoom] = useState<'wide' | 'close'>('wide');
   const stop = route.stops.find((s) => s.id === selectedId) ?? null;
 
   const choose = (id: string) => {
@@ -49,7 +50,11 @@ export default function MapPage({ routeId }: Props) {
 
       <div className="map-layout">
         <div className="map-frame">
-          <RouteMap route={route} selectedId={selectedId} onSelect={setSelectedId} playToken={playToken} />
+          <div className="route-switch zoom-switch" role="group" aria-label="תצוגה">
+            <button type="button" className={`chip press${zoom === 'wide' ? ' is-active' : ''}`} aria-pressed={zoom === 'wide'} onClick={() => setZoom('wide')}>המזרח הקרוב</button>
+            <button type="button" className={`chip press${zoom === 'close' ? ' is-active' : ''}`} aria-pressed={zoom === 'close'} onClick={() => setZoom('close')}>ארץ ישראל מקרוב</button>
+          </div>
+          <RouteMap route={route} selectedId={selectedId} onSelect={setSelectedId} playToken={playToken} zoom={zoom} />
           <div className="journey-bar">
             <button type="button" className="chip press" onClick={() => setPlayToken((n) => n + 1)}>
               {playToken === 0 ? 'הפעל מסע' : 'הפעל שוב'}
@@ -79,6 +84,10 @@ export default function MapPage({ routeId }: Props) {
               <p>
                 <Rich text={stop.note} />
               </p>
+              <p className="dig-note">
+                <strong>תיעוד ארכיאולוגי:</strong> {stop.dig}
+              </p>
+              {stop.disputed && <p className="dispute-note">מיקום שנוי במחלוקת. המיקום המוצג הוא הצעה לאתר זיהוי.</p>}
               {stop.storyIds.length > 0 ? (
                 <div className="story-links">
                   {stop.storyIds.map((sid) => {
