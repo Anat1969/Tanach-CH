@@ -4,6 +4,7 @@ import Stage from '../components/Stage';
 import HowTo from '../components/HowTo';
 import { KIND_LABEL, PEOPLE, RELATIONS, type RelationKind } from '../content/people';
 import { STORIES } from '../content/stories';
+import { TREES } from '../content/families';
 
 const KIND_COLOR: Record<RelationKind, string> = {
   family: '#222222',
@@ -11,9 +12,20 @@ const KIND_COLOR: Record<RelationKind, string> = {
   bond: '#888888',
 };
 
-// Topic: relations. Choosing a kind of relation narrows the stage; the family tree zooms in and out.
+// The tree that shows each kind of relation: blood ties run in the lineage from Abraham to Moses;
+// conflict and covenant (bond) run in the lineage of Samuel, Saul, David and Elijah.
+const TREE_FOR: Record<'all' | RelationKind, string> = {
+  all: 'avot-moshe',
+  family: 'avot-moshe',
+  conflict: 'melachim',
+  bond: 'melachim',
+};
+
+// Topic: relations. Choosing a kind of relation narrows the stage and chooses the whole tree shown.
 export default function PeoplePage() {
   const [kind, setKind] = useState<RelationKind | null>(null);
+  const treeId = TREE_FOR[kind ?? 'all'];
+  const treeTitle = TREES.find((t) => t.id === treeId)?.he ?? '';
   const stories = STORIES.filter((st) =>
     RELATIONS.some((r) => (kind === null || r.kind === kind) && (st.people.includes(r.a) || st.people.includes(r.b))),
   );
@@ -49,7 +61,8 @@ export default function PeoplePage() {
         ))}
       </div>
 
-      <Stage stories={stories} focusId={focusId} onFocus={setFocusId} />
+      <p className="eyebrow">עץ המוצג: {treeTitle}</p>
+      <Stage stories={stories} focusId={focusId} onFocus={setFocusId} treeId={treeId} />
 
       <section className="stage-list" aria-label="דמויות">
         <p className="eyebrow">

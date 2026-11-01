@@ -2129,3 +2129,28 @@ h3 {
   stroke: rgba(30, 28, 25, 0.85);
   stroke-width: 3px;
 }
+
+/* Schematic territory of the era in focus: dashed outline, labelled as schematic. */
+.territory-area {
+  fill: rgba(111, 154, 107, 0.16);
+  stroke: #3f6b4a;
+  stroke-width: 2.5;
+  stroke-dasharray: 9 6;
+}
+.territory-label {
+  font-family: var(--display);
+  font-size: 14px;
+  fill: #fbf7ee;
+  paint-order: stroke;
+  stroke: rgba(30, 28, 25, 0.85);
+  stroke-width: 3.5px;
+}
+
+/* The map stays in view while the story list scrolls (desktop). */
+@media (min-width: 900px) {
+  .stage-map {
+    position: sticky;
+    top: 140px;
+    align-self: start;
+  }
+}

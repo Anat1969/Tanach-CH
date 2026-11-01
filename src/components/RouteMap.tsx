@@ -3,7 +3,8 @@ import { animate, motion, MotionConfig } from 'framer-motion';
 import { ROUTES, CLOSE_VIEW, type RouteDef } from '../content/route';
 import MapBase from './MapBase';
 import { usePanZoom } from '../lib/panzoom';
-import { GEO_VIEW } from '../content/geo-data';
+import { GEO_VIEW, GEO_PROJECT } from '../content/geo-data';
+import { TERRITORY } from '../content/territory';
 
 export const MAP_VIEW = GEO_VIEW;
 const JOURNEY_SECONDS = 12;
@@ -20,9 +21,14 @@ interface Props {
   zoom?: 'wide' | 'close';
   // Satellite image under the routes. On by default; the reader can switch it off for the drawn map.
   satellite?: boolean;
+  // The era in focus. When the era has a schematic territory, its outline is drawn on the map.
+  era?: string;
 }
 
-export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [], zoom = 'wide', satellite = true }: Props) {
+export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [], zoom = 'wide', satellite = true, era }: Props) {
+  const territory = era ? TERRITORY.find((t) => t.era === era) : undefined;
+  const territoryPts = territory ? territory.points.map(([lon, lat]) => GEO_PROJECT(lon, lat)) : [];
+  const territoryCenter = territory ? GEO_PROJECT(territory.labelAt[0], territory.labelAt[1]) : [0, 0];
   const view = zoom === 'close' ? CLOSE_VIEW : MAP_VIEW;
   const pz = usePanZoom(view);
   // The close-up is zoomed in, so labels and markers scale down to keep their proportion.
@@ -73,6 +79,15 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
       >
         <title id="map-title">{`מפה סכמטית: ${route.he}`}</title>
         <MapBase satellite={satellite} />
+
+        {territory && (
+          <g className="map-territory" aria-label={`${territory.label}, ${territory.ref}`}>
+            <polygon points={territoryPts.map((p) => p.join(',')).join(' ')} className="territory-area" />
+            <text x={territoryCenter[0]} y={territoryCenter[1]} textAnchor="middle" className="territory-label" style={{ direction: 'rtl' }}>
+              {`${territory.label} (סכמטי)`}
+            </text>
+          </g>
+        )}
 
         {/* Both routes are drawn; the chosen one is full strength. */}
         {ROUTES.map((r) => {
