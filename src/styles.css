@@ -2112,3 +2112,20 @@ h3 {
 .global-rail .seq-legend {
   display: none;
 }
+
+/* Satellite mode: labels get a dark halo so they stay readable on the image. */
+.map-svg.is-sat .geo-label {
+  fill: #fbf7ee;
+  stroke: rgba(30, 28, 25, 0.85);
+  stroke-width: 3.5px;
+}
+.map-svg.is-sat .geo-water {
+  fill: #cfe6f5;
+  stroke: rgba(20, 30, 40, 0.9);
+}
+.map-svg.is-sat .map-scale-note {
+  fill: #fbf7ee;
+  paint-order: stroke;
+  stroke: rgba(30, 28, 25, 0.85);
+  stroke-width: 3px;
+}

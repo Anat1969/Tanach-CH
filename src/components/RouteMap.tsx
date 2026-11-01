@@ -18,9 +18,11 @@ interface Props {
   highlightStopIds?: string[];
   // 'wide' shows the whole region, 'close' the land of Israel.
   zoom?: 'wide' | 'close';
+  // Satellite image under the routes. On by default; the reader can switch it off for the drawn map.
+  satellite?: boolean;
 }
 
-export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [], zoom = 'wide' }: Props) {
+export default function RouteMap({ route, selectedId, onSelect, playToken, highlightStopIds = [], zoom = 'wide', satellite = true }: Props) {
   const view = zoom === 'close' ? CLOSE_VIEW : MAP_VIEW;
   const pz = usePanZoom(view);
   // The close-up is zoomed in, so labels and markers scale down to keep their proportion.
@@ -59,7 +61,7 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
       <svg
         ref={pz.ref}
         viewBox={pz.viewBox}
-        className="map-svg"
+        className={`map-svg${satellite ? ' is-sat' : ''}`}
         role="img"
         aria-labelledby="map-title"
         style={{ direction: 'ltr', touchAction: 'none', cursor: 'grab' }}
@@ -70,7 +72,7 @@ export default function RouteMap({ route, selectedId, onSelect, playToken, highl
         onDoubleClick={pz.reset}
       >
         <title id="map-title">{`מפה סכמטית: ${route.he}`}</title>
-        <MapBase />
+        <MapBase satellite={satellite} />
 
         {/* Both routes are drawn; the chosen one is full strength. */}
         {ROUTES.map((r) => {
