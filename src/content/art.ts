@@ -114,6 +114,22 @@ export const ART: Record<string, Artwork> = {
     source: 'https://www.metmuseum.org/art/collection/search/397657',
     license: 'נחלת הכלל (CC0, The Met)',
   },
+  'lech-lecha': {
+    src: 'art/lech-lecha.jpg',
+    title: "אברהם ושרה בדרך בכנען למצרים (בראשית יב)",
+    artist: "P.M.",
+    year: "ca. 1567 (לפי המוזיאון)",
+    source: 'https://www.metmuseum.org/art/collection/search/204598',
+    license: 'נחלת הכלל (CC0, The Met)',
+  },
+  'eliyahu': {
+    src: 'art/eliyahu.jpg',
+    title: "אליהו במדבר, מאכיל אותו מלאך. לפני חורב (מלכים א, יט, ד-ח)",
+    artist: "Alessandro Magnasco",
+    year: "1687–1749 (לפי המוזיאון)",
+    source: 'https://www.metmuseum.org/art/collection/search/335975',
+    license: 'נחלת הכלל (CC0, The Met)',
+  },
   'bereshit-creation': {
     src: 'art/bereshit-creation.jpg',
     title: 'יצירת המאורות והצומח, התקרה של הקפלה הסיסטינית',

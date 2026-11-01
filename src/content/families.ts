@@ -20,13 +20,14 @@ export interface Tree {
   siblings?: string[];
 }
 
+// One lineage from Abraham to Moses, and Joshua as his servant and heir. The lineage runs through Jacob's son Levi.
 export const TREES: Tree[] = [
   {
-    id: 'bereshit',
-    he: 'בראשית: מאברהם עד יוסף',
-    note: 'אברהם, שרה, הגר, ישמעאל, יצחק, רבקה, עשו, יעקב, לאה, רחל ויוסף. אחים נוספים של יעקב אינם מוצגים.',
+    id: 'avot-moshe',
+    he: 'מאברהם עד משה ויהושע: שושלת אחת',
+    note: 'אברהם, יצחק, יעקב, לוי, קהת, עמרם, יוכבד, ומשה, אהרן ומרים. הקו מיוחס ללוי, בנו של יעקב מלאה. אחים נוספים של יעקב ושל לוי אינם מוצגים.',
     w: 1000,
-    h: 540,
+    h: 1090,
     nodes: [
       { id: 'hagar', x: 90, y: 30 },
       { id: 'abraham', x: 290, y: 30 },
@@ -39,6 +40,14 @@ export const TREES: Tree[] = [
       { id: 'leah', x: 740, y: 350 },
       { id: 'rachel', x: 930, y: 350 },
       { id: 'joseph', x: 930, y: 480 },
+      { id: 'levi', x: 740, y: 480 },
+      { id: 'kohath', x: 740, y: 610 },
+      { id: 'amram', x: 740, y: 740 },
+      { id: 'jochebed', x: 930, y: 740 },
+      { id: 'miriam', x: 560, y: 880 },
+      { id: 'aaron', x: 740, y: 880 },
+      { id: 'moses', x: 930, y: 880 },
+      { id: 'joshua', x: 930, y: 1010 },
     ],
     unions: [
       { a: 'abraham', b: 'sarah', kind: 'marriage' },
@@ -46,6 +55,8 @@ export const TREES: Tree[] = [
       { a: 'isaac', b: 'rebekah', kind: 'marriage' },
       { a: 'jacob', b: 'leah', kind: 'marriage' },
       { a: 'jacob', b: 'rachel', kind: 'marriage' },
+      { a: 'amram', b: 'jochebed', kind: 'marriage' },
+      { a: 'moses', b: 'joshua', kind: 'bond' },
     ],
     parentage: [
       { parents: ['abraham', 'hagar'], child: 'ishmael' },
@@ -53,22 +64,13 @@ export const TREES: Tree[] = [
       { parents: ['isaac', 'rebekah'], child: 'esau' },
       { parents: ['isaac', 'rebekah'], child: 'jacob' },
       { parents: ['jacob', 'rachel'], child: 'joseph' },
+      { parents: ['jacob', 'leah'], child: 'levi' },
+      { parents: ['levi'], child: 'kohath' },
+      { parents: ['kohath'], child: 'amram' },
+      { parents: ['amram', 'jochebed'], child: 'miriam' },
+      { parents: ['amram', 'jochebed'], child: 'aaron' },
+      { parents: ['amram', 'jochebed'], child: 'moses' },
     ],
-  },
-  {
-    id: 'shemot',
-    he: 'שמות: משה ואחיו',
-    note: 'משה, אהרן ומרים הם אחים. הורי משה אינם מוצגים ברשימת הדמויות. יהושע הוא משרתו ויורשו.',
-    w: 1000,
-    h: 360,
-    nodes: [
-      { id: 'miriam', x: 160, y: 120 },
-      { id: 'aaron', x: 500, y: 120 },
-      { id: 'moses', x: 840, y: 120 },
-      { id: 'joshua', x: 840, y: 270 },
-    ],
-    unions: [{ a: 'moses', b: 'joshua', kind: 'bond' }],
-    parentage: [],
     siblings: ['miriam', 'aaron', 'moses'],
   },
   {
