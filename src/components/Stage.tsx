@@ -21,12 +21,15 @@ export default function Stage({
   route,
   focusId,
   onFocus,
+  treeId,
 }: {
   stories: Story[];
   eras?: Era[];
   route?: RouteDef;
   focusId: string;
   onFocus: (id: string) => void;
+  // When set, the tree shown is this whole tree, not the one of the story in focus.
+  treeId?: string;
 }) {
   const stories = orderStories(unordered);
   const [zoom, setZoom] = useState<'wide' | 'close'>('wide');
@@ -38,7 +41,9 @@ export default function Stage({
   const mapRoute = route ?? (focus && ROUTES.find((r) => r.stops.some((st) => st.storyIds.includes(focus.id)))) ?? ROUTES[0];
   const stopIds = mapRoute.stops.filter((st) => stories.some((s) => st.storyIds.includes(s.id))).map((st) => st.id);
   const focusStopIds = focus ? mapRoute.stops.filter((st) => st.storyIds.includes(focus.id)).map((st) => st.id) : [];
-  const tree = focus && TREES.find((t) => t.nodes.some((n) => focus.people.includes(n.id)));
+  const tree = treeId
+    ? TREES.find((t) => t.id === treeId)
+    : focus && TREES.find((t) => t.nodes.some((n) => focus.people.includes(n.id)));
   const eraOfFocus = focus ? [focus.era] : eras ?? [];
 
   return (
