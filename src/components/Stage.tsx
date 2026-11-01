@@ -30,6 +30,7 @@ export default function Stage({
 }) {
   const stories = orderStories(unordered);
   const [zoom, setZoom] = useState<'wide' | 'close'>('wide');
+  const [satellite, setSatellite] = useState(true);
   const [playToken, setPlayToken] = useState(0);
   const focus = stories.find((s) => s.id === focusId) ?? stories[0];
   const storyIds = stories.map((s) => s.id);
@@ -55,13 +56,16 @@ export default function Stage({
                 המזרח הקרוב
               </button>
               <button type="button" className="chip press" onClick={() => setPlayToken((n) => n + 1)}>הפעל מסע</button>
+              <button type="button" className={`chip press${satellite ? ' is-active' : ''}`} aria-pressed={satellite} onClick={() => setSatellite((v) => !v)}>
+                תמונת לוויין
+              </button>
               <button type="button" className={`chip press${zoom === 'close' ? ' is-active' : ''}`} aria-pressed={zoom === 'close'} onClick={() => setZoom('close')}>
                 ארץ ישראל מקרוב
               </button>
             </div>
           </div>
           <div className="map-frame">
-            <RouteMap route={mapRoute} selectedId={null} onSelect={() => undefined} playToken={playToken} highlightStopIds={focusStopIds.length ? focusStopIds : stopIds} zoom={zoom} />
+            <RouteMap route={mapRoute} selectedId={null} onSelect={() => undefined} playToken={playToken} highlightStopIds={focusStopIds.length ? focusStopIds : stopIds} zoom={zoom} satellite={satellite} />
           </div>
         </section>
 

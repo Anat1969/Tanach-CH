@@ -1,4 +1,6 @@
 import { GEO_LAND, GEO_LAKES, GEO_RIVERS, GEO_PROJECT, GEO_VIEW } from '../content/geo-data';
+import { SAT_CREDIT } from '../content/satellite';
+import SatelliteLayer from './SatelliteLayer';
 
 // Every label here is placed by real coordinates. Source of the geometry: Natural Earth (public domain).
 const at = (lon: number, lat: number) => GEO_PROJECT(lon, lat);
@@ -26,13 +28,21 @@ const LABELS: Label[] = [
   { lon: 32.1, lat: 27.9, text: 'הנילוס', kind: 'river' },
 ];
 
-export default function MapBase() {
+// With the satellite on, the drawn land, sea and rivers are hidden, because the image already shows them.
+// The sea colour stays underneath as a fallback if the image does not load. Labels and the compass stay.
+export default function MapBase({ satellite = false }: { satellite?: boolean }) {
   return (
     <g className="map-base" aria-hidden="true">
       <rect x={-200} y={-200} width={1400} height={1000} className="map-sea" />
-      <path d={GEO_LAND} className="map-land" />
-      <path d={GEO_LAKES} className="map-lake" />
-      <path d={GEO_RIVERS} className="map-river" />
+      {satellite ? (
+        <SatelliteLayer />
+      ) : (
+        <>
+          <path d={GEO_LAND} className="map-land" />
+          <path d={GEO_LAKES} className="map-lake" />
+          <path d={GEO_RIVERS} className="map-river" />
+        </>
+      )}
       {LABELS.map((l) => {
         const [x, y] = at(l.lon, l.lat);
         return (
@@ -49,7 +59,9 @@ export default function MapBase() {
         </text>
       </g>
       <text x={20} y={VIEW_H - 14} className="map-scale-note" style={{ direction: 'rtl' }}>
-        מפה גאוגרפית פשוטה. קווי החוף והנהרות מ-Natural Earth (נחלת הכלל). המיקומים המסומנים משוערים.
+        {satellite
+          ? `${SAT_CREDIT} המיקומים המסומנים משוערים.`
+          : 'מפה גאוגרפית פשוטה. קווי החוף והנהרות מ-Natural Earth (נחלת הכלל). המיקומים המסומנים משוערים.'}
       </text>
     </g>
   );
