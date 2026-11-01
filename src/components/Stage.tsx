@@ -65,7 +65,7 @@ export default function Stage({
             </div>
           </div>
           <div className="map-frame">
-            <RouteMap route={mapRoute} selectedId={null} onSelect={() => undefined} playToken={playToken} highlightStopIds={focusStopIds.length ? focusStopIds : stopIds} zoom={zoom} satellite={satellite} />
+            <RouteMap route={mapRoute} selectedId={null} onSelect={() => undefined} playToken={playToken} highlightStopIds={focusStopIds.length ? focusStopIds : stopIds} zoom={zoom} satellite={satellite} era={focus?.era} />
           </div>
         </section>
 
