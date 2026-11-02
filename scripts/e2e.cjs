@@ -87,7 +87,7 @@ async function run() {
     // Stories as rows
     await page.goto(`${BASE}#/stories`);
     await page.waitForSelector('.story-rows');
-    ok((await page.locator('.story-rows a.story-row').count()) === 17, 'seventeen stories listed as rows');
+    ok((await page.locator('.story-rows a.story-row').count()) === 18, 'eighteen stories listed as rows');
 
     // Books: three levels on one page
     await page.goto(`${BASE}#/books`);
