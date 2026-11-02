@@ -33,6 +33,8 @@ export const PEOPLE: Person[] = [
   { id: 'kohath', he: 'קהת', en: 'Kohath' },
   { id: 'amram', he: 'עמרם', en: 'Amram' },
   { id: 'jochebed', he: 'יוכבד', en: 'Jochebed' },
+  { id: 'nadab', he: 'נדב', en: '' },
+  { id: 'avihu', he: 'אביהוא', en: '' },
   { id: 'leah', he: 'לאה', en: 'Leah' },
   { id: 'rachel', he: 'רחל', en: 'Rachel' },
   { id: 'joseph', he: 'יוסף', en: 'Joseph' },
@@ -79,4 +81,6 @@ export const RELATIONS: Relation[] = [
   { a: 'amram', b: 'aaron', kind: 'family', label: 'בן', ref: 'שמות ו, כ' },
   { a: 'amram', b: 'miriam', kind: 'family', label: 'בת', ref: 'במדבר כו, נט' },
   { a: 'jochebed', b: 'moses', kind: 'family', label: 'אם', ref: 'שמות ו, כ' },
+  { a: 'aaron', b: 'nadab', kind: 'family', label: 'בן', ref: 'ויקרא י, א' },
+  { a: 'aaron', b: 'avihu', kind: 'family', label: 'בן', ref: 'ויקרא י, א' },
 ];

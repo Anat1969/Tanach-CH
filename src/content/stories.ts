@@ -1,5 +1,6 @@
 import type { Story } from '../types';
 import { STAGE_ONE_STORIES } from './stories-stage-one';
+import { VAYIKRA_STORIES } from './stories-vayikra';
 
 // Every verse is quoted from the text (unvocalized, ketiv). Every reading below names its kind:
 // text (טקסט), hint (רמז), midrash (מדרש), traditional commentary (פרשנות) or kabbalah (קבלה).
@@ -258,4 +259,4 @@ const BASE_STORIES: Story[] = [
   },
 ];
 
-export const STORIES: Story[] = [...BASE_STORIES, ...STAGE_ONE_STORIES];
+export const STORIES: Story[] = [...BASE_STORIES, ...STAGE_ONE_STORIES, ...VAYIKRA_STORIES];
