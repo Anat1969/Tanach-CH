@@ -145,7 +145,7 @@ export default function FamilyTree({ tree, selected = '', onPick = () => undefin
             role="button"
             tabIndex={0}
             aria-pressed={on}
-            aria-label={`${p.he}, ${p.en}`}
+            aria-label={p.en ? `${p.he}, ${p.en}` : p.he}
             onClick={() => onPick(n.id)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {

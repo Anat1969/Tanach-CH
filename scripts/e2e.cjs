@@ -87,13 +87,13 @@ async function run() {
     // Stories as rows
     await page.goto(`${BASE}#/stories`);
     await page.waitForSelector('.story-rows');
-    ok((await page.locator('.story-rows a.story-row').count()) === 16, 'sixteen stories listed as rows');
+    ok((await page.locator('.story-rows a.story-row').count()) === 17, 'seventeen stories listed as rows');
 
     // Books: three levels on one page
     await page.goto(`${BASE}#/books`);
     await page.waitForSelector('.book-row');
     ok((await page.locator('.book-row').count()) === 24, 'twenty-four books shown');
-    ok((await page.locator('.book-row:disabled').count()) === 21, 'twenty-one books planned, three active');
+    ok((await page.locator('.book-row:disabled').count()) === 20, 'twenty books planned, four active');
     await page.locator('.book-row', { hasText: 'בראשית' }).click();
     ok((await page.locator('.story-rows.nested a.story-row').count()) === 8, 'opening a book shows its stories in place');
 
