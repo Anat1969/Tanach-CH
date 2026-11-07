@@ -8,6 +8,7 @@ const NAV: [string, string][] = [
   ['time', 'ציר זמן'],
   ['people', 'יחסים'],
   ['journal', 'יומן'],
+  ['creations', 'כתבות'],
 ];
 
 // Standard bar: the app mark and name link home, content navigation follows on the right,
