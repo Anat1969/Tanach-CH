@@ -11,6 +11,7 @@ import TimePage from './pages/TimePage';
 import PeoplePage from './pages/PeoplePage';
 import JournalPage from './pages/JournalPage';
 import BooksPage from './pages/BooksPage';
+import CreationsPage from './pages/CreationsPage';
 
 export default function App() {
   const { parts, params } = useRoute();
@@ -39,6 +40,9 @@ export default function App() {
       break;
     case 'journal':
       page = <JournalPage />;
+      break;
+    case 'creations':
+      page = <CreationsPage />;
       break;
     default:
       page = <HomePage />;

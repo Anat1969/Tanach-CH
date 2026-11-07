@@ -3,6 +3,7 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       'ai-menu': Record<string, unknown> & { className?: string };
+      'app-creations': Record<string, unknown> & { src?: string; heading?: string };
     }
   }
 }
