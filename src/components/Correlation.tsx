@@ -44,7 +44,8 @@ interface Props {
 // and everything tied to the same stories stays lit in each module.
 export default function Correlation({ stories, title, initial = 'stories', eras }: Props) {
   const [primary, setPrimary] = useState<Module>(initial);
-  const order: Module[] = [primary, ...MODULES.map((m) => m[0]).filter((m) => m !== primary)];
+  // Only the chosen lens is shown, across the whole page. The chips above switch between them.
+  const order: Module[] = [primary];
 
   if (stories.length === 0) {
     return (

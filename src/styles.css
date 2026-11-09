@@ -183,9 +183,9 @@ a {
 
 /* Page layout: one column, max width, RTL. */
 .page {
-  max-width: 1120px;
+  max-width: 1680px;
   margin: 0 auto;
-  padding: var(--s5) var(--s3) var(--s5);
+  padding: var(--s5) clamp(16px, 3vw, 56px) var(--s5);
 }
 
 .page > * + * {
@@ -706,7 +706,7 @@ mark.insight {
 
 /* Footer */
 .foot {
-  max-width: 1120px;
+  max-width: 1680px;
   margin: var(--s5) auto;
   padding: var(--s4) var(--s3);
   border-top: 1px solid var(--line);
@@ -2153,4 +2153,51 @@ h3 {
     top: 140px;
     align-self: start;
   }
+}
+
+/* Layout pass: full-width reading path, part labels over the book band, one lens at a time. */
+.flow {
+  position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.flow .link-card {
+  position: relative;
+}
+.flow .link-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  inset-inline-start: -14px;
+  width: 14px;
+  height: 2px;
+  background: var(--ink);
+  opacity: 0.5;
+}
+.seq-sections {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+.seq-section {
+  flex-basis: 0;
+  min-width: 0;
+  border-top: 4px solid;
+  padding: 6px 8px 0;
+  display: grid;
+  gap: 2px;
+}
+.seq-section-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.seq-section-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+.corr-head .route-switch .chip {
+  font-size: 15px;
+  padding: 4px 12px;
 }

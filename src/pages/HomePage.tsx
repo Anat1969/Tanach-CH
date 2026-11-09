@@ -88,7 +88,7 @@ export default function HomePage() {
 
       <section className="block">
         <h2 className="section-title">מה יש כאן</h2>
-        <div className="grid cards">
+        <div className="grid cards flow">
           {CARDS.map((c, i) => (
             <motion.a
               key={c.href}
