@@ -2,6 +2,7 @@
 // verse where the clause matches the quoted wording; otherwise the whole verse is shown. Cantillation
 // marks are removed; vowels and dagesh are kept.
 export const QUOTE_VOCAL: Record<string, string> = {
+  shmini: "וַיֵּרָא כְבוֹד־יְהוָה אֶל־כָּל־הָעָם׃",
   sukkot: "וּלְקַחְתֶּם לָכֶם בַּיּוֹם הָרִאשׁוֹן פְּרִי עֵץ הָדָר כַּפֹּת תְּמָרִים וַעֲנַף עֵץ־עָבֹת וְעַרְבֵי נָחַל׃",
   bechukotai: "אִם־בְּחֻקֹּתַי תֵּלֵכוּ וְאֶת־מִצְוֺתַי תִּשְׁמְרוּ וַעֲשִׂיתֶם אֹתָם׃",
   yovel: "וּקְרָאתֶם דְּרוֹר בָּאָרֶץ לְכׇל־יֹשְׁבֶיהָ יוֹבֵל הִוא תִּהְיֶה לָכֶם׃",
