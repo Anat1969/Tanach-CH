@@ -57,9 +57,24 @@ export function BookSequence({ current, compact = false }: { current?: string; c
   const W = 1000;
   const H = compact ? 60 : 150;
   let acc = 0;
+  // Section totals for the labels above the band: each part's width follows its chapter count.
+  const sectionTotals = SECTIONS.map((s) => ({
+    name: s,
+    chapters: BOOKS.filter((b) => b.section === s).reduce((sum, b) => sum + (CHAPTER_COUNT[b.id] ?? 0), 0),
+  }));
   return (
     <figure className={`book-seq${compact ? ' is-compact' : ''}`}>
       {!compact && <figcaption className="eyebrow">כל ספרי התנ"ך לפי הסדר המסורתי, ברוחב לפי מספר הפרקים</figcaption>}
+      {!compact && (
+        <div className="seq-sections" aria-hidden="true">
+          {sectionTotals.map((st) => (
+            <div key={st.name} className="seq-section" style={{ flexGrow: st.chapters, borderColor: SECTION_COLOR[st.name] }}>
+              <span className="seq-section-name">{st.name}</span>
+              <span className="seq-section-count">{st.chapters} פרקים</span>
+            </div>
+          ))}
+        </div>
+      )}
       <svg viewBox={`0 0 ${W} ${H}`} className="seq-svg" role="img" aria-label="סדר ספרי התנ&quot;ך">
         {BOOKS.map((b) => {
           const w = ((CHAPTER_COUNT[b.id] ?? 0) / total) * W;

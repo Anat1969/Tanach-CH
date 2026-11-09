@@ -16,6 +16,13 @@ export const STORY_CHAPTERS: Record<string, { book: string; from: number; to: nu
   'har-sinai': { book: 'shemot', from: 19, to: 19 },
   egel: { book: 'shemot', from: 32, to: 32 },
   eliyahu: { book: 'melachim', from: 19, to: 19 },
+  'nadav-avihu': { book: 'vayikra', from: 10, to: 10 },
+  'yom-kippur': { book: 'vayikra', from: 16, to: 16 },
+  kedoshim: { book: 'vayikra', from: 19, to: 19 },
+  yovel: { book: 'vayikra', from: 25, to: 25 },
+  bechukotai: { book: 'vayikra', from: 26, to: 26 },
+  sukkot: { book: 'vayikra', from: 23, to: 23 },
+  shmini: { book: 'vayikra', from: 9, to: 9 },
 };
 
 // Chapter counts for the 24 books as the Hebrew Bible groups them. Samuel and Kings are one book each,
