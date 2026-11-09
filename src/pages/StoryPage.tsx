@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import IsoStack from '../components/IsoStack';
-import Motif from '../components/Motif';
 import Correlation from '../components/Correlation';
 import { ART } from '../content/art';
 import { QUOTE_VOCAL } from '../content/quotes';
@@ -65,9 +64,6 @@ export default function StoryPage({ id, level }: Props) {
         <p className="insight-line">
           <Rich text={`==${story.insight}==`} />
         </p>
-        <div className="story-motif">
-          <Motif size={120} />
-        </div>
         {ART[story.id] && (
           <figure className="art-hero">
             <img src={ART[story.id].src} alt={ART[story.id].title} />
@@ -87,6 +83,12 @@ export default function StoryPage({ id, level }: Props) {
         <p className="quote-text" lang="he">“{QUOTE_VOCAL[story.id] ?? story.quote.text}”</p>
         <cite>{story.quote.source}</cite>
       </blockquote>
+
+      <section className="haiku-band" aria-label="שלוש שורות">
+        <p className="eyebrow">שלוש שורות</p>
+        <Typed lines={story.haiku} />
+        <p className="haiku-note">{story.haikuNote}</p>
+      </section>
 
       <div className="story-layout">
         <aside className="story-side">
@@ -113,18 +115,10 @@ export default function StoryPage({ id, level }: Props) {
         </motion.section>
       </div>
 
-      <div className="grid two">
-        <section className="card">
-          <p className="eyebrow">שאלות לקורא · לחצו לכתיבת תשובה</p>
-          <QuestionAnswers storyId={story.id} questions={story.questions} />
-        </section>
-
-        <section className="card tone-insight">
-          <p className="eyebrow">שלוש שורות</p>
-          <Typed lines={story.haiku} />
-          <p className="haiku-note">{story.haikuNote}</p>
-        </section>
-      </div>
+      <section className="card">
+        <p className="eyebrow">שאלות לקורא · לחצו לכתיבת תשובה</p>
+        <QuestionAnswers storyId={story.id} questions={story.questions} />
+      </section>
 
       {stops.length > 0 && (
         <section className="block">

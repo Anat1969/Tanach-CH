@@ -2201,3 +2201,21 @@ h3 {
   font-size: 15px;
   padding: 4px 12px;
 }
+
+/* The haiku is the emphasis of the story: full width, large, under the quote. */
+.haiku-band {
+  padding: var(--s4) clamp(16px, 3vw, 48px);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-inline-start: 6px solid #c9a24a;
+  box-shadow: var(--shadow);
+  font-size: clamp(24px, 2.6vw, 40px);
+  line-height: 1.45;
+}
+.haiku-band .eyebrow {
+  font-size: 13px;
+}
+.haiku-band .haiku-note {
+  font-size: 16px;
+}
+
